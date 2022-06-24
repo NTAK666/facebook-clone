@@ -10,7 +10,6 @@ interface IProps {
 }
 
 const HomeLayout: React.FC<IProps> = ({children}) => {
-
     return <>
         <Header/>
         <WrapperContentStyled>
