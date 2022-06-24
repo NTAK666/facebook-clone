@@ -7,8 +7,12 @@ import WatchPage from "./pages/Watch";
 import GamePage from "./pages/Game";
 import MarketplacePage from "./pages/Marketplace";
 import GroupPage from "./pages/Group";
+import {useGetFriendsQuery, useGetMeQuery} from "./app/services/UserService";
 
 function App() {
+    useGetMeQuery();
+    useGetFriendsQuery();
+    
     return (
         <Routes>
             <Route path="/" element={<HomePage/>}/>

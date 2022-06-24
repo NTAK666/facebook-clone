@@ -2,27 +2,34 @@ import React, {useMemo} from 'react';
 import NavList from "./NavList";
 import styles from './styles.module.scss'
 import {Box, Typography} from "@mui/material";
-import {LIST_FRIEND} from "../../../constants";
 import NavItemButton from "../NavItemButton";
 import AvatarOnline from "../../Avatar/AvatarOnline";
 import NavItemLink from "../NavItemLink";
 import CakeIcon from '@mui/icons-material/Cake';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import {useAppDispatch, useAppSelector} from "../../../app/hook";
+import {IUser} from "../../../app/models/User";
+import {createChatBox} from "../../../app/features/ChatBoxSlice";
+
 interface IProps {
 
 }
 
 const NavbarRight: React.FC<IProps> = () => {
+    const {friends} = useAppSelector(state => state.userSlice)
+    const dispatch = useAppDispatch();
 
     const renderList = useMemo(() => {
-        if (LIST_FRIEND.length !== 0) {
-            return LIST_FRIEND.map((item: any, index: number) => {
-                return <NavItemButton key={index} title={item.title} Icon={<AvatarOnline
-                    src={item.src} online={true}/>}/>
+        if (friends.length !== 0) {
+            return friends.map((item: IUser, index: number) => {
+                return <NavItemButton key={index} onClick={() => {
+                    dispatch(createChatBox(item));
+                }} title={`${item.firstName} ${item.lastName}`} Icon={<AvatarOnline
+                    src={item.picture} online={true}/>}/>
             })
         }
         return null;
-    }, [])
+    }, [friends, dispatch])
 
 
     return <>
@@ -32,7 +39,8 @@ const NavbarRight: React.FC<IProps> = () => {
                     <Typography fontSize={'medium'} fontWeight={'bold'}>Sinh nhật</Typography>
                 </Box>
             }>
-                <NavItemLink title={'Hôm nay là sinh nhật của Anh Kiệt'} Icon={<CakeIcon sx={{width: '40px', height: '40px'}}/>}
+                <NavItemLink title={'Hôm nay là sinh nhật của Anh Kiệt'}
+                             Icon={<CakeIcon sx={{width: '40px', height: '40px'}}/>}
                              to={'/profile/anh-kiet'}/>
             </NavList>
 

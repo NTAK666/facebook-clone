@@ -1,3 +1,23 @@
+export interface IUser {
+    id: string;
+    title: string;
+    firstName: string;
+    lastName: string;
+    picture: string;
+}
+
+export interface IUserFull {
+    id: string;
+    title: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    email: string;
+    phone: string;
+    picture: string;
+}
+
+
 export interface IUserLogin {
     email: string;
     password: string;

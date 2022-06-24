@@ -7,13 +7,17 @@ interface IProps {
     onClick?: (e: any) => void;
     title?: string;
     number?: number;
+    color?: "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning";
+    width?: string;
+    height?: string;
 }
 
-const ButtonCircle: React.FC<IProps> = ({title = '', onClick, children, number}) => {
+const ButtonCircle: React.FC<IProps> = (props) => {
+    const {title = '', onClick, children, number, color, width = '40px', height = '40px'} = props;
     return <>
         <Tooltip title={title}>
-            <Badge badgeContent={number || null} color='error'>
-                <IconButtonCustom onClick={onClick}>
+            <Badge badgeContent={number || null} color={color || "default"}>
+                <IconButtonCustom onClick={onClick} sx={{width: width, height: height}}>
                     {children}
                 </IconButtonCustom>
             </Badge>
@@ -27,9 +31,6 @@ const IconButtonCustom = styled(IconButton)`
   &:hover {
     background-color: #cbccd0;
   }
-
-  width: 40px;
-  height: 40px;
 `
 
 export default ButtonCircle;

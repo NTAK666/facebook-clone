@@ -1,0 +1,11 @@
+.root {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  .listIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
