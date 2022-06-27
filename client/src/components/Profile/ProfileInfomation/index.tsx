@@ -89,6 +89,11 @@ const ProfileInfomation = () => {
                     </Box>
                 </Box>
             </Box>
+            <Box className={styles.tabButton}>
+                <Box>
+                    <hr/>
+                </Box>
+            </Box>
         </Box>
     )
 }
