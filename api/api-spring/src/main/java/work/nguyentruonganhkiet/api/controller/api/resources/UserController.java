@@ -13,15 +13,19 @@ import work.nguyentruonganhkiet.api.model.dtos.requests.ChangeFriendStatusDto;
 import work.nguyentruonganhkiet.api.model.dtos.requests.UpdateUserRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.MessageReturnDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.entities.UserHaftDto;
-import work.nguyentruonganhkiet.api.model.entities.*;
+import work.nguyentruonganhkiet.api.model.entities.Friend;
+import work.nguyentruonganhkiet.api.model.entities.Notification;
+import work.nguyentruonganhkiet.api.model.entities.Post;
+import work.nguyentruonganhkiet.api.model.entities.User;
 import work.nguyentruonganhkiet.api.model.enums.FriendStatus;
 import work.nguyentruonganhkiet.api.model.enums.NotificationType;
-import work.nguyentruonganhkiet.api.service.*;
+import work.nguyentruonganhkiet.api.service.NotificationService;
+import work.nguyentruonganhkiet.api.service.PostService;
+import work.nguyentruonganhkiet.api.service.RoomService;
+import work.nguyentruonganhkiet.api.service.UserService;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 import static work.nguyentruonganhkiet.api.utils.constant.STATUS.HTTP_OK;
