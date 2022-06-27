@@ -11,9 +11,12 @@ import {IChatBox} from "../../app/features/ChatBoxSlice";
 
 interface IProps {
     children: React.ReactNode;
+    isNavbarLeft?: boolean;
+    isNavbarRight?: boolean;
 }
 
-const HomeLayout: React.FC<IProps> = ({children}) => {
+const HomeLayout: React.FC<IProps> = (props) => {
+    const {isNavbarRight = true, isNavbarLeft = true, children} = props;
 
 
     const {chatbox} = useAppSelector(state => state.chatBoxSlice);
@@ -29,15 +32,17 @@ const HomeLayout: React.FC<IProps> = ({children}) => {
     return <>
         <Header/>
         <WrapperContentStyled>
-            <Box>
+            {isNavbarLeft && <Box>
                 <NavbarLeft/>
-            </Box>
+            </Box>}
             <ContentStyled>
                 {children}
             </ContentStyled>
-            <Box>
-                <NavbarRight/>
-            </Box>
+            {isNavbarRight && (
+                <Box>
+                    <NavbarRight/>
+                </Box>
+            )}
             {renderChatBox()}
             <ChatBoxHidden/>
         </WrapperContentStyled>

@@ -36,7 +36,7 @@ interface IProps {
     likeNumber?: number;
     commentNumber?: number;
     shareNumber?: number;
-    postId: number;
+    postId: string;
 }
 
 const PostNormal: React.FC<IProps> = (props) => {
@@ -80,6 +80,11 @@ const PostNormal: React.FC<IProps> = (props) => {
                     </>
                 )
             }
+            return (
+                <Typography className={styles.bodyText}>
+                    {content}
+                </Typography>
+            )
         }
         return null;
     }
@@ -174,7 +179,7 @@ const PostNormal: React.FC<IProps> = (props) => {
                 </Box>
                 <Box sx={{padding: '0 10px'}}>
                     <Divider sx={{width: '100%'}}/>
-                    <Comment />
+                    <Comment postId={postId}/>
                 </Box>
             </Paper>
         </ListItem>

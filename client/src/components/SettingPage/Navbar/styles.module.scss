@@ -1,0 +1,29 @@
+.root {
+  position: fixed;
+  top: var(--header-height);
+  background: white;
+  width: var(--navbar-width);
+  height: 95%;
+  padding-bottom: 20px;
+  left: 0;
+  box-shadow: 8.5px 8.5px 23px rgba(0, 0, 0, 0.018),
+  100px 100px 184px rgba(0, 0, 0, 0.06);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+    transition: all .5s;
+  }
+
+  &:hover {
+
+    &::-webkit-scrollbar {
+      display: block;
+      transition: all .5s;
+    }
+  }
+
+  .header {
+    padding: 10px 20px;
+  }
+}

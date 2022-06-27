@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Box, InputBase} from "@mui/material";
+import {Box, IconButton, InputBase} from "@mui/material";
 import styles from "../header.module.scss";
 import ButtonCircle from "../../../Button/Circle";
 import Menu from "../Menu";
@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import {useAppDispatch, useAppSelector} from "../../../../app/hook";
 import {IUser} from "../../../../app/models/User";
 import {createChatBox} from "../../../../app/features/ChatBoxSlice";
+import MultiMenu from "../../../MultiMenu";
 
 interface IProps {
 
@@ -21,9 +22,11 @@ const HeaderRight: React.FC<IProps> = () => {
     const [anchorEl, setAnchorEl] = React.useState<{
         notify: null | HTMLElement;
         messenger: null | HTMLElement;
+        settings: null | HTMLElement;
     }>({
         notify: null,
-        messenger: null
+        messenger: null,
+        settings: null,
     });
     const openMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, title: any) => {
         switch (title) {
@@ -31,6 +34,7 @@ const HeaderRight: React.FC<IProps> = () => {
                 setAnchorEl(({notify}) => {
                     return {
                         messenger: null,
+                        settings: null,
                         notify: notify ? null : event.currentTarget,
                     }
                 });
@@ -39,7 +43,17 @@ const HeaderRight: React.FC<IProps> = () => {
                 setAnchorEl(({messenger}) => {
                     return {
                         messenger: messenger ? null : event.currentTarget,
+                        settings: null,
                         notify: null,
+                    }
+                })
+                break;
+            case 'settings':
+                setAnchorEl(({settings}) => {
+                    return {
+                        messenger: null,
+                        notify: null,
+                        settings: settings ? null : event.currentTarget
                     }
                 })
                 break;
@@ -62,7 +76,8 @@ const HeaderRight: React.FC<IProps> = () => {
     const handleClose = () => {
         setAnchorEl({
             messenger: null,
-            notify: null
+            notify: null,
+            settings: null
         })
     }
 
@@ -93,9 +108,12 @@ const HeaderRight: React.FC<IProps> = () => {
                 <InputSearchMessenger placeholder={'Tìm kiếm trên Messenger'}/>
                 {renderMenuChat}
             </Menu>
-            <AvatarCircle
-                src={user.picture}
-                title={'Trang cá nhân của bạn'}/>
+            <IconButton onClick={(event) => openMenu(event, 'settings')}>
+                <AvatarCircle
+                    src={user.picture}
+                    title={'Trang cá nhân của bạn'}/>
+            </IconButton>
+            <MultiMenu anchorEl={anchorEl['settings']} handleClose={handleClose} />
         </Box>
     </>
 }
@@ -108,5 +126,7 @@ const InputSearchMessenger = styled(InputBase)`
   font-size: 16px;
   margin-bottom: 10px;
 `
+
+
 
 export default HeaderRight;

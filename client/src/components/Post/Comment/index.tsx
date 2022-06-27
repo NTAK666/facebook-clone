@@ -7,9 +7,10 @@ import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import CommentItem from "./CommentItem";
 
 interface IProps {
+    postId: string;
 }
 
-const Comment: React.FC<IProps> = () => {
+const Comment: React.FC<IProps> = ({postId}) => {
     return (
         <>
             <Box className={styles.root}>

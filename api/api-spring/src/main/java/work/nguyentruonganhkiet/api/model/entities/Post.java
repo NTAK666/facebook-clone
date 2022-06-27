@@ -1,6 +1,8 @@
 package work.nguyentruonganhkiet.api.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ import work.nguyentruonganhkiet.api.model.sub.CommentPost;
 import work.nguyentruonganhkiet.api.model.sub.ReactPost;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,23 +28,24 @@ import java.util.Set;
 @EntityListeners(PostObserve.class)
 public class Post extends BaseEntity {
 
-	private String title;
 	private String slug;
 	private String thumbnail;
-	private String description;
+	@NotNull
 	private String body;
 	@Column(columnDefinition = "int default 0")
-	private String views;
-	private String cover;
+	private long views = 0;
 
-	@OneToMany(mappedBy = "post", orphanRemoval = true)
+	@OneToMany(mappedBy = "post", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Set<ReactPost> reactPosts = new LinkedHashSet<>();
 
-	@OneToMany(mappedBy = "post", orphanRemoval = true)
+	@OneToMany(mappedBy = "post", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Set<CommentPost> commentPosts = new LinkedHashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonBackReference
+	@JoinColumn(name = "user_id")
+	private User user;
 
 }

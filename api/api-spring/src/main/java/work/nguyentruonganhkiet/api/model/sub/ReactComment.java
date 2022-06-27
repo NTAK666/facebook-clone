@@ -1,6 +1,7 @@
 package work.nguyentruonganhkiet.api.model.sub;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import work.nguyentruonganhkiet.api.model.entities.Comment;
 import work.nguyentruonganhkiet.api.model.entities.React;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +22,8 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 public class ReactComment extends React {
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonBackReference
 	@JoinColumn(name = "comment_id")
 	private Comment comment;
 

@@ -1,13 +1,19 @@
 package work.nguyentruonganhkiet.api.model.entities;
 
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import work.nguyentruonganhkiet.api.model.base.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,7 +28,8 @@ public class Permission extends BaseEntity {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	@ManyToMany(mappedBy = "permissions")
+	@ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+	@JsonBackReference
 	private Set<Role> roles = new LinkedHashSet<>();
 
 }

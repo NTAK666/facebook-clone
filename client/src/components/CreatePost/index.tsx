@@ -38,8 +38,8 @@ const CreatePost: React.FC<Props> = (props) => {
                         <Box className={styles.modal}>
                             <Box className={styles.header}>
                                 <h3>Tạo bài viết</h3>
-                                <IconButton className={styles.closeButton} aria-label="delete">
-                                    <CloseIcon onClick={handleClose}/>
+                                <IconButton onClick={handleClose} className={styles.closeButton} aria-label="delete">
+                                    <CloseIcon />
                                 </IconButton>
                             </Box>
                             <hr/>

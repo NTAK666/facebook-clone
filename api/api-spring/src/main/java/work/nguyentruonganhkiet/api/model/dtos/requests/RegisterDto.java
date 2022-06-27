@@ -2,17 +2,23 @@ package work.nguyentruonganhkiet.api.model.dtos.requests;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+
 public class RegisterDto {
 
 	private String email;
 
 	private String password;
 
-	private String name;
+	private String firstName;
+
+	private String lastName;
 
 	private Date birthday;
 

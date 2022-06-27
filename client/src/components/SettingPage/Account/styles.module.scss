@@ -1,0 +1,28 @@
+.root {
+  height: 100vh;
+  width: 100%;
+
+  .header {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .list {
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    padding: 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .listItem {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 10px;
+      border-bottom: 1px solid #333;
+      color: #606770;
+
+    }
+  }
+}

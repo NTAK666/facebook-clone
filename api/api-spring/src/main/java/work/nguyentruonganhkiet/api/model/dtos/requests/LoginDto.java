@@ -2,8 +2,12 @@ package work.nguyentruonganhkiet.api.model.dtos.requests;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+
 public class LoginDto {
 
 	private String email;

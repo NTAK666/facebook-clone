@@ -121,8 +121,7 @@ const Chatbox: React.FC<IProps> = ({chatbox, position}) => {
                     <Typography sx={{fontSize: '14px'}} fontWeight={'bold'}>{information.name}</Typography>
                 </ButtonBase>
 
-                <Menu
-                    anchorEl={anchorEl}
+                <Menu anchorEl={anchorEl}
                     id="account-menu"
                     open={open}
                     onClose={handleClose}

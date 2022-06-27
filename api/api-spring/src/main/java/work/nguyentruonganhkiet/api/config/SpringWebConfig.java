@@ -25,7 +25,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
 						"/js/**" ,
 						"/vendor/**" ,
 						"/scss/**" ,
-						"/product-image/**")
+						"/images/**")
 				.addResourceLocations(
 						"classpath:/static/master/" ,
 						"classpath:/static/video/" ,
@@ -35,7 +35,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
 						"classpath:/static/js/" ,
 						"classpath:/static/vendor/" ,
 						"classpath:/static/scss/" ,
-						"classpath:/static/product-image/"
+						"classpath:/static/images/"
 				);
 	}
 
