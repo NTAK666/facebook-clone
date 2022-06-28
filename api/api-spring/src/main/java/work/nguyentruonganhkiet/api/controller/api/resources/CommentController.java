@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(API_ENDPOINTS_COMMENTS)
 public class CommentController {

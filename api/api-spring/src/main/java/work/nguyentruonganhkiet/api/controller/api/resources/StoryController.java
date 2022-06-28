@@ -32,6 +32,7 @@ import java.util.Set;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(API_ENDPOINTS_STORIES)
 public class StoryController {
