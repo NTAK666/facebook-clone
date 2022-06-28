@@ -21,6 +21,8 @@ public class MessageReturnDto<T> {
 
 	private Pageable paginate;
 
+	private final String buildVersion = "Version 1.0.1";
+
 	@Getter
 	@Setter
 
