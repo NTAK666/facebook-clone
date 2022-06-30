@@ -21,7 +21,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 public class ReactStory extends React {
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JsonBackReference
 	@JoinColumn(name = "story_id")
 	private Story story;

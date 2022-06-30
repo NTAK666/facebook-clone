@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 public class ReactComment extends React {
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JsonBackReference
 	@JoinColumn(name = "comment_id")
 	private Comment comment;

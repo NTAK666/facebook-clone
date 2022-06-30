@@ -23,7 +23,7 @@ import javax.persistence.ManyToOne;
 @SuperBuilder
 public class ReactPost extends React {
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JsonBackReference
 	@JoinColumn(name = "post_id")
 	private Post post;

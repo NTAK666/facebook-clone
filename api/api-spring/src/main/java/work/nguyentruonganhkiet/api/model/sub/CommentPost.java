@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 public class CommentPost extends Comment {
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JsonBackReference
 	@JoinColumn(name = "post_id")
 	private Post post;

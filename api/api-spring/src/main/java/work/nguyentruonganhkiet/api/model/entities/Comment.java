@@ -27,7 +27,7 @@ public class Comment extends BaseEntity {
 	@Column(columnDefinition = "TEXT")
 	public String comment;
 
-	@OneToMany(mappedBy = "comment", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "comment", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JsonManagedReference
 	private Set<ReactComment> reactComments = new LinkedHashSet<>();
 

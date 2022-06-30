@@ -66,7 +66,7 @@ public class dbSeeder {
 	public void postSeeder() {
 		if (postRepository.count() < 50) {
 			for (int i = 0 ; i < 50 ; i++) {
-				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 100)).orElse(null);
+				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 50)).orElse(null);
 				Post post = Post.builder().body(faker.lorem().paragraph()).thumbnail("https://picsum.photos/" + faker.number().numberBetween(1000 , 2000) + "/" + faker.number().numberBetween(800 , 1200)).user(user).build();
 				this.postRepository.save(post);
 			}
@@ -76,8 +76,9 @@ public class dbSeeder {
 	public void reactPostSeeder() {
 		for (int i = 1 ; i < 50 ; i++) {
 			Post post = this.postRepository.findById((long) i).orElse(null);
+			assert post != null;
 			for (int j = 1 ; j < 10 ; j++) {
-				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 100)).orElse(null);
+				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 50)).orElse(null);
 				ReactPost reactPost = ReactPost.builder()
 						.reactType(ReactType.values()[faker.number().numberBetween(0 , ReactType.values().length)]).user(user).post(post).build();
 				this.reactRepository.save(reactPost);
@@ -88,8 +89,9 @@ public class dbSeeder {
 	public void commentPostSeeder() {
 		for (int i = 1 ; i < 50 ; i++) {
 			Post post = this.postRepository.findById((long) i).orElse(null);
+			assert post != null;
 			for (int j = 1 ; j < 10 ; j++) {
-				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 100)).orElse(null);
+				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 50)).orElse(null);
 				CommentPost commentPost = CommentPost.builder().comment(faker.lorem().characters()).post(post).user(user).build();
 				this.commentRepository.save(commentPost);
 			}
@@ -100,7 +102,7 @@ public class dbSeeder {
 		for (int i = 1 ; i < 50 ; i++) {
 			Comment comment = this.commentRepository.findById((long) i).orElse(null);
 			for (int j = 1 ; j < 10 ; j++) {
-				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 100)).orElse(null);
+				User user = this.userRepository.findById((long) faker.number().numberBetween(1 , 50)).orElse(null);
 				ReactComment reactComment = ReactComment.builder()
 						.reactType(ReactType.values()[faker.number().numberBetween(0 , ReactType.values().length)]).user(user).comment(comment).build();
 				this.reactRepository.save(reactComment);
