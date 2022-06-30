@@ -1,6 +1,17 @@
 version: "3.9"
 
 services:
+  #  mysqlDb:
+  #    image: mysql:5.7
+  #    container_name: mysqlDb
+  #    environment:
+  #      MYSQL_DATABASE: api
+  #      MYSQL_ROOT_PASSWORD: root
+  #    networks:
+  #      - backend
+  #    ports:
+  #      - "3306:3306"
+
   app:
     container_name: app
     build:
@@ -13,5 +24,3 @@ services:
       SPRING_DATASOURCE_NAME: api
     ports:
       - "1000:1000"
-
-

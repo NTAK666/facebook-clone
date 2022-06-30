@@ -1,0 +1,20 @@
+.introduceList {
+  padding: 20px;
+  .introduceItem {
+    padding: 6px 0 6px 0;
+    display: flex;
+    gap: 10px;
+    .iconIntroduce{
+     img{
+       width: 20px;
+       height: 20px;
+       filter: grayscale(100%);
+     }
+    }
+    .textIntroduce{
+        font-size: .875rem;
+        font-weight: 400;
+        color: #050505;
+    }
+  }
+}

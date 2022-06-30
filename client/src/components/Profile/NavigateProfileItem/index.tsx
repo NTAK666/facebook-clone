@@ -10,27 +10,34 @@ interface IProps {
     title?: string;
 }
 
-const NavigateItem: React.FC<IProps> = ({title, to, children, active}) => {
+const NavigateProfileItem: React.FC<IProps> = ({title, to, children, active}) => {
     return <>
         <Tooltip title={title || ''}>
-            <Link to={to} className={active ? 'navigate-active' : ''}>
-                <ButtonStyled>
+            <LinkStyled to={to} className={active ? 'navigate-profile-active' : ''}>
+                <ButtonStyled className={'button-active'}>
                     {children}
                 </ButtonStyled>
-            </Link>
+            </LinkStyled>
         </Tooltip>
     </>
 }
+
+const LinkStyled = styled(Link)`
+  text-decoration: none;
+  color: #65676B;
+`
 
 const ButtonStyled = styled(ButtonBase)`
   min-width: 50px;
   height: 100%;
   padding: 10px 25px;
   border-radius: 6px;
+  font-size: .875rem;
+  font-weight: bold;
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 `
 
 
-export default NavigateItem;
+export default NavigateProfileItem;
