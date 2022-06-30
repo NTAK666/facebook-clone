@@ -118,7 +118,7 @@ public class dbSeeder {
     public void storySeeder() {
         for (int i = 1; i < 100; i++) {
             User user = this.userRepository.findById((long) i).orElse(null);
-            Story story = Story.builder().user(user).body(faker.lorem().characters(100, 500)).build();
+            Story story = Story.builder().user(user).title(faker.lorem().characters(100, 500)).build();
             this.storyRepository.save(story);
         }
     }

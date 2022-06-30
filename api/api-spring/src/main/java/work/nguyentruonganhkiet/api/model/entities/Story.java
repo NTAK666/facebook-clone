@@ -29,7 +29,7 @@ public class Story extends BaseEntity {
 
     @NotNull
     @Column(columnDefinition = "TEXT")
-    private String body;
+    private String title;
     @NotNull
     @Column(columnDefinition = "TEXT")
     private String image;
