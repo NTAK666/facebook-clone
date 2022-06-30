@@ -31,7 +31,7 @@ public abstract class React extends BaseEntity {
 	@Column(name = "react_count", nullable = false, columnDefinition = "int default 0")
 	private int reactCount;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JsonBackReference
 	@JoinColumn(name = "user_id")
 	private User user;
