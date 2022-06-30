@@ -28,8 +28,11 @@ import java.util.Set;
 @EntityListeners(PostObserve.class)
 public class Post extends BaseEntity {
 
+	@Column(columnDefinition = "TEXT")
 	private String slug;
+	@Column(columnDefinition = "TEXT")
 	private String thumbnail;
+	@Column(columnDefinition = "TEXT")
 	@NotNull
 	private String body;
 	@Column(columnDefinition = "int default 0")
@@ -43,7 +46,7 @@ public class Post extends BaseEntity {
 	@JsonManagedReference
 	private Set<CommentPost> commentPosts = new LinkedHashSet<>();
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JsonBackReference
 	@JoinColumn(name = "user_id")
 	private User user;

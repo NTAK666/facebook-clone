@@ -1,0 +1,25 @@
+.root {
+  background: var(--background-home);
+  height: 100vh;
+  .navbar {
+    width: var(--navbar-width);
+    background: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+    .header {
+      padding: 10px;
+    }
+  }
+  .content {
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px;
+    }
+  }
+}

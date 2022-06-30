@@ -11,7 +11,7 @@ const SettingPage: React.FC<IProps> = () => {
     return <>
         <SettingLayout>
             <Routes>
-                <Route path={`/account`} element={<Account/>}/>
+                <Route index element={<Account/>}/>
             </Routes>
         </SettingLayout>
     </>

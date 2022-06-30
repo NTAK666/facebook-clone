@@ -5,9 +5,11 @@ import styles from './styles.module.scss'
 import SubMenu from "./SubMenu";
 import {Link, useNavigate} from "react-router-dom";
 import styled from "@emotion/styled";
-import {useAppSelector} from "../../app/hook";
+import {useAppDispatch, useAppSelector} from "../../app/hook";
 import {LIST_MENU_SETTING} from "../../constants";
 import MultiMenuItem from "./MultiMenuItem";
+import {onLogout} from "../../app/features/AuthSlice";
+import NProgress from "nprogress";
 
 const PROFILE_LINK = `/profile`
 
@@ -18,8 +20,9 @@ interface IProps {
 
 const MultiMenu: React.FC<IProps> = (props) => {
     const {anchorEl, handleClose} = props;
-    const {user} = useAppSelector(state => state.userSlice);
+    const {user} = useAppSelector(state => state.authSlice);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const [subMenuList, setSubMenuList] = useState<{
         data: any[],
         title: string;
@@ -54,34 +57,42 @@ const MultiMenu: React.FC<IProps> = (props) => {
                 active: false
             }
         });
-        console.log('Go back')
     }
 
     const renderMenuSettings = useMemo(() => {
         return LIST_MENU_SETTING.map((item, index) => {
             const {Icon, subMenu, label, to} = item;
-            return <MultiMenuItem onClick={() => {
-                if (to) {
-                    return navigate(to);
+            return <MultiMenuItem onClick={async () => {
+                if (label === `Đăng xuất`) {
+                    dispatch(onLogout());
+                    NProgress.set(0);
+                    NProgress.set(0.4);
+                    NProgress.set(1);
+                    return navigate(`/login`);
                 }
+
+                if (to) return navigate(to);
+
                 if (subMenu) {
                     setSubMenuList({
                         data: [...subMenu],
                         title: label,
                         active: true
                     });
+                    return;
                 }
             }} key={index} arrowIcon={!!subMenu} icon={<Icon/>} text={label}/>
         })
-    }, [navigate])
+    }, [navigate, dispatch])
 
     return anchorEl && (
         createPortal(<>
             <Paper className={styles.root}>
                 <MultiMenuHeader>
                     <Box sx={{display: 'flex', alignItems: 'center', gap: '15px', width: '100%'}}>
-                        <Avatar src={user.picture} sx={{width: '50px', height: '50px'}}/>
-                        <Typography fontWeight={'bold'}>{`${user.firstName} ${user.lastName}`}</Typography>
+                        <Avatar src={user.userInfo.avatar || ""} sx={{width: '50px', height: '50px'}}/>
+                        <Typography
+                            fontWeight={'bold'}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`}</Typography>
                     </Box>
                     <Divider sx={{width: '90%', backgroundColor: "#e4e6eb", margin: '0 auto'}}/>
                     <Link to={PROFILE_LINK} className={'text-decoration-none'}>
@@ -92,7 +103,8 @@ const MultiMenu: React.FC<IProps> = (props) => {
                 <List sx={{marginTop: '10px'}}>
                     {renderMenuSettings}
                 </List>
-                <SubMenu parentTitle={subMenuList['title']} active={subMenuList['active']} data={subMenuList['data']} handleClose={handleGoBack}/>
+                <SubMenu parentTitle={subMenuList['title']} active={subMenuList['active']} data={subMenuList['data']}
+                         handleClose={handleGoBack}/>
             </Paper>
         </>, anchorEl)
     )

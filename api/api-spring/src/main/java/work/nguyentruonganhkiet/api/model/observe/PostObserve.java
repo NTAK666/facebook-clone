@@ -3,18 +3,16 @@ package work.nguyentruonganhkiet.api.model.observe;
 
 import work.nguyentruonganhkiet.api.model.entities.Post;
 
+import javax.persistence.PostPersist;
 import javax.persistence.PreUpdate;
+import java.util.UUID;
 
 public class PostObserve {
 
 
-	@PreUpdate
-	private void beforeUpdatePost( Post post ) {
-		// check current user own post
-		// if not, throw exception
-
-
-
-	}
+    @PostPersist
+    private void beforeUpdatePost(Post post) {
+        post.setSlug(UUID.randomUUID().toString());
+    }
 
 }

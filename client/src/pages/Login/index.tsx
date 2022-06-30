@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './login.scss'
 import {Box, ButtonBase, Container, Divider, Typography} from "@mui/material";
 import styled from "@emotion/styled";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {SubmitHandler, useForm} from "react-hook-form";
 import {IUserLogin} from "../../app/models/User";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
 import RegisterModal from "../../components/Modal/Register";
+import {useGetMeQuery, usePostLoginMutation} from "../../app/services/AuthService";
+import NProgress from "nprogress";
+import {useAppSelector} from "../../app/hook";
 
 const InputLogin = styled("input")`
   background-color: white;
@@ -55,14 +58,38 @@ const schema = yup.object().shape({
 })
 
 const LoginPage: React.FC = () => {
-    const {register, formState: {errors}, handleSubmit} = useForm<IUserLogin>({
+    const {refetch, isLoading: getMeLoading} = useGetMeQuery();
+    const {isLoggedIn} = useAppSelector(state => state.authSlice);
+    const navigate = useNavigate();
+    const {register, setValue, formState: {errors}, handleSubmit} = useForm<IUserLogin>({
         resolver: yupResolver(schema),
         mode: "onSubmit"
-    }    )
+    })
+    const [postLoginApi, {isLoading: loginLoading}] = usePostLoginMutation();
     const [openRegister, setOpenRegister] = useState(false)
 
-    const handleLogin: SubmitHandler<IUserLogin> = (data) => {
-        console.log(data)
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/")
+        }
+        if (loginLoading || getMeLoading) {
+            NProgress.start()
+        } else {
+            NProgress.done()
+        }
+
+    }, [loginLoading, getMeLoading, navigate, isLoggedIn]);
+
+    const handleLogin: SubmitHandler<IUserLogin> = async (data) => {
+        await postLoginApi(data).then(async (response: any) => {
+            const data = response.data.data;
+            if (response.data.status === 200) {
+                setValue("email", "");
+                setValue("password", "");
+                window.localStorage.setItem("auth", data.token);
+                refetch();
+            }
+        })
     }
 
     return (
@@ -77,7 +104,8 @@ const LoginPage: React.FC = () => {
                     </Box>
                     <Box>
                         <form className="login__form" onSubmit={handleSubmit(handleLogin)}>
-                            <InputLogin type="text" className={`${errors.email ? "input__login--error" : ""}`} {...register("email")}
+                            <InputLogin type="text"
+                                        className={`${errors.email ? "input__login--error" : ""}`} {...register("email")}
                                         placeholder="Email hoặc số điện thoại"/>
                             {errors.email && <Typography className="message__login--error">
                                 {errors.email.message}.
@@ -88,7 +116,9 @@ const LoginPage: React.FC = () => {
                                     </Typography>
                                 </Link>
                             </Typography>}
-                            <InputLogin type="password" {...register("password")} className={`${errors.password ? "input__login--error" : ""}`} placeholder="Mật khẩu"/>
+                            <InputLogin type="password" {...register("password")}
+                                        className={`${errors.password ? "input__login--error" : ""}`}
+                                        placeholder="Mật khẩu"/>
                             {errors.password && <Typography className="message__login--error">
                                 {errors.password.message}
                             </Typography>}

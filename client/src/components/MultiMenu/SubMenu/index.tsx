@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import styles from './styles.module.scss'
 import {Box, IconButton, Typography} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -15,14 +15,14 @@ interface IProps {
 const SubMenu: React.FC<IProps> = ({data, active, parentTitle, handleClose}) => {
     const navigate = useNavigate();
 
-    const renderMenuItem = useMemo(() => {
+    const renderMenuItem = () => {
         return data.map((item, index) => {
             const {Icon, label, to} = item;
             return <MultiMenuItem onClick={() => {
                 navigate(to);
             }} key={index} icon={<Icon/>} text={label}/>
         })
-    }, [data])
+    }
 
     return <>
         <Box className={`${styles.root} ${active ? styles.active : ''}`}>
@@ -33,7 +33,7 @@ const SubMenu: React.FC<IProps> = ({data, active, parentTitle, handleClose}) => 
                 <Typography fontWeight={'bold'} fontSize={'large'}>{parentTitle}</Typography>
             </Box>
             <Box>
-                {renderMenuItem}
+                {renderMenuItem()}
             </Box>
         </Box>
     </>

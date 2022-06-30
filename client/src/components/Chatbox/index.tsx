@@ -24,14 +24,14 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import {IUser} from "../../app/models/User";
+import {IUserFull} from "../../app/models/User";
 import {useAppDispatch} from "../../app/hook";
 import {closeChatBox, minimizeChatBox} from "../../app/features/ChatBoxSlice";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Picker from 'emoji-picker-react';
 
 interface IProps {
-    chatbox: IUser;
+    chatbox: IUserFull;
     position: 'chatbox-one' | 'chatbox-two' | 'chatbox-three';
 }
 
@@ -58,8 +58,8 @@ const Chatbox: React.FC<IProps> = ({chatbox, position}) => {
         setInformation((information) => {
             return {
                 ...information,
-                name: `${chatbox.firstName} ${chatbox.lastName}`,
-                avatar: chatbox.picture
+                name: `${chatbox.userInfo.firstName} ${chatbox.userInfo.lastName}`,
+                avatar: chatbox.userInfo.avatar || ""
             }
         })
     }, [chatbox]);

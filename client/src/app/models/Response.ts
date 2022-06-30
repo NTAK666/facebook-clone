@@ -1,6 +1,6 @@
 export interface Response<T> {
-    limit: number;
-    data: T;
-    page: number;
-    total: number;
+    status: number;
+    message: string;
+    data: T,
+    paginate: any
 }

@@ -23,7 +23,7 @@ const Header: React.FC<IProps> = () => {
     }, [pathname]);
 
     return <Box className={styles.root}>
-        <Box className={styles.headerRight}>
+        <Box className={styles.headerLeft}>
             <Box className={styles.logo}>
                 <img src="/images/logo.svg" alt=""/>
             </Box>

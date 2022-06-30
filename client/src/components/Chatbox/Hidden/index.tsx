@@ -36,7 +36,7 @@ const ChatBoxHidden: React.FC<IProps> = () => {
                 <IconButton key={index} onClick={() => {
                     dispatch(openChatBox(item.user));
                 }}>
-                    <AvatarOnline width={'50px'} height={'50px'} src={item.user.picture} online={true}/>
+                    <AvatarOnline width={'50px'} height={'50px'} src={item.user.userInfo.avatar} online={true}/>
                 </IconButton>
             )
         })

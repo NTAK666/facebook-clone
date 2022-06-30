@@ -1,20 +1,21 @@
-export interface IUser {
-    id: string;
-    title: string;
-    firstName: string;
-    lastName: string;
-    picture: string;
+export interface IUserFull {
+    id: number
+    email: string
+    userInfo: IUserInfo
 }
 
-export interface IUserFull {
-    id: string;
-    title: string;
-    firstName: string;
-    lastName: string;
-    gender: string;
-    email: string;
-    phone: string;
-    picture: string;
+export interface IUserInfo {
+    firstName: string
+    lastName: string
+    phone: null | string
+    address: null | string
+    avatar: null | string
+    coverImage: null | string
+    about: null | string
+    bio: null | string
+    slug: null | string
+    birthday: null | string
+    gender: boolean
 }
 
 
@@ -29,5 +30,5 @@ export interface IUserRegister {
     birthday: string;
     firstName: string;
     lastName: string;
-    gender: string; // 0: Nữ, 1: Nam
+    gender: boolean; // 0: Nữ, 1: Nam
 }

@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IUser} from "../models/User";
+import {IUserFull} from "../models/User";
 
 export type IChatBox = {
-    user: IUser,
+    user: IUserFull,
     status: "SHOW" | "HIDE"
 }
 
@@ -31,7 +31,7 @@ const chatBoxSlice = createSlice({
     name: "chatSlice",
     initialState,
     reducers: {
-        createChatBox: (state, {payload}: PayloadAction<IUser>) => {
+        createChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
             const index = list.findIndex(item => item.user.id === payload.id);
             if (index !== -1) {
@@ -50,10 +50,10 @@ const chatBoxSlice = createSlice({
 
             state.chatbox = [...list];
         },
-        closeChatBox: (state, {payload}: PayloadAction<IUser>) => {
+        closeChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
             state.chatbox = state.chatbox.filter(item => item.user.id !== payload.id);
         },
-        openChatBox: (state, {payload}: PayloadAction<IUser>) => {
+        openChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
             const index = list.findIndex(item => item.user.id === payload.id);
 
@@ -74,7 +74,7 @@ const chatBoxSlice = createSlice({
 
             state.chatbox = [...list];
         },
-        minimizeChatBox: (state, {payload}: PayloadAction<IUser>) => {
+        minimizeChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
             const index = list.findIndex(item => item.user.id === payload.id);
 

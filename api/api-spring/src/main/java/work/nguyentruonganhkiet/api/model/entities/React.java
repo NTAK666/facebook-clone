@@ -22,6 +22,7 @@ import javax.persistence.*;
 @EntityListeners(ReactObserve.class)
 public abstract class React extends BaseEntity {
 
+	@Column(columnDefinition = "int default 0")
 	private int views = 0;
 
 	@Column(name = "react_type", nullable = false)

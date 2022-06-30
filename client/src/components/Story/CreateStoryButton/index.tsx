@@ -10,7 +10,7 @@ interface Props {
     }
 }
 
-const CreateStory: React.FC<Props> = (props) => {
+const CreateStoryButton: React.FC<Props> = (props) => {
     return (
         <Grid item xs={2.25} className={styles.createStory}>
             <Button sx={{height: '100%', padding: '0'}}>
@@ -30,4 +30,4 @@ const CreateStory: React.FC<Props> = (props) => {
     );
 }
 
-export default CreateStory;
+export default CreateStoryButton;

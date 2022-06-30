@@ -9,10 +9,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import work.nguyentruonganhkiet.api.model.base.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -24,8 +21,9 @@ import javax.validation.constraints.NotNull;
 public class Message extends BaseEntity {
 
 	@NotNull
+	@Column(columnDefinition = "TEXT")
 	public String message;
-
+	@Column(columnDefinition = "TEXT")
 	public String media;
 
 	@ManyToOne(fetch = FetchType.EAGER)

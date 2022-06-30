@@ -40,19 +40,19 @@ import static work.nguyentruonganhkiet.api.utils.constant.STATUS.*;
 @RestController
 @RequestMapping(API_ENDPOINTS_AUTH)
 public class AuthController {
-    final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    final UserInfoRepository userInfoRepository;
+    private final UserInfoRepository userInfoRepository;
 
-    final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    final JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     private final UserService userService;
 

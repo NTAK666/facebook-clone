@@ -22,7 +22,7 @@ import java.util.Set;
 @SuperBuilder
 public class Role extends BaseEntity {
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false, unique = true,columnDefinition = "TEXT")
 	private String name;
 
 	@ManyToMany(fetch = FetchType.EAGER)

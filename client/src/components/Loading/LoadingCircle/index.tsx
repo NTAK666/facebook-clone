@@ -3,7 +3,7 @@ import styles from './loading-circle.module.scss';
 
 const LoadingCircle = () => {
     return (
-        <div >
+        <div className={styles.root}>
             <span className={styles.loader}/>
         </div>
     )

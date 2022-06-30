@@ -16,14 +16,14 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import {Logout} from "@mui/icons-material";
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {IUser} from "../../../../app/models/User";
+import {IUserFull} from "../../../../app/models/User";
 
 interface IProps {
     src: string;
     title: string;
     description?: string;
     onClick?: () => void;
-    user: IUser;
+    user: IUserFull;
 }
 
 const MenuChatItem: React.FC<IProps> = ({onClick, src, title, description, user}) => {

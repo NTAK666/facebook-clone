@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 
@@ -62,6 +63,11 @@ public class PostController {
 
             List<Post> posts = user.getFriends().stream().map(friend -> friend.getUser().getPosts()).flatMap(Set::stream).filter(post -> !post.isDelete()).toList();
 
+            posts.forEach(post -> {
+                Set<CommentPost> commentPosts = post.getCommentPosts().stream().sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt())).limit(5).collect(Collectors.toSet());
+                post.setCommentPosts(commentPosts);
+            });
+
             List<PostDto> postDtos = posts.stream().map(post -> modelMapper.map(post, PostDto.class)).toList();
 
             Page<PostDto> pagePosts = new PageImpl<>(postDtos, pageable, posts.size());
@@ -82,6 +88,11 @@ public class PostController {
             User user = userService.findByEmail(userDetails.getUsername());
 
             List<Post> posts = this.postService.findAllByUserId(user.getId(), pageable);
+
+            posts.forEach(post -> {
+                Set<CommentPost> commentPosts = post.getCommentPosts().stream().sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt())).limit(5).collect(Collectors.toSet());
+                post.setCommentPosts(commentPosts);
+            });
 
             if (posts.isEmpty())
                 return MessageReturnDto.<List<PostDto>>builder().data(null).message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).build();

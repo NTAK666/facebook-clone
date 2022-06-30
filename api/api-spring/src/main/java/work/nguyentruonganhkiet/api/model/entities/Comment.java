@@ -24,6 +24,7 @@ import java.util.Set;
 public class Comment extends BaseEntity {
 
 	@NotNull
+	@Column(columnDefinition = "TEXT")
 	public String comment;
 
 	@OneToMany(mappedBy = "comment", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)

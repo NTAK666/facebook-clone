@@ -17,7 +17,7 @@ export const LIST_MENU_SETTING = [
             {
                 Icon: SettingsIcon,
                 label: `Cài đặt`,
-                to: `/settings/account`
+                to: `/settings`
             },
             {
                 label: `Kiểm tra quyền riêng tư`,
@@ -83,7 +83,7 @@ export const LIST_MENU_SETTING = [
 export const LIST_SETTING = [
     {
         label: `Chung`,
-        to: `/settings/account`,
+        to: `/settings`,
         src: `https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/cMDqLX1Td21.png`
     },
     {

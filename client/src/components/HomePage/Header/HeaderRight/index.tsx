@@ -1,15 +1,12 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Box, IconButton, InputBase} from "@mui/material";
-import styles from "../header.module.scss";
+import styles from "./styles.module.scss";
 import ButtonCircle from "../../../Button/Circle";
 import Menu from "../Menu";
 import MenuItemWithAvatar from "../MenuItemWithAvatar";
-import MenuChatItem from "../MenuChatItem";
 import AvatarCircle from "../../../Avatar/AvatarCircle";
 import styled from "@emotion/styled";
-import {useAppDispatch, useAppSelector} from "../../../../app/hook";
-import {IUser} from "../../../../app/models/User";
-import {createChatBox} from "../../../../app/features/ChatBoxSlice";
+import {useAppSelector} from "../../../../app/hook";
 import MultiMenu from "../../../MultiMenu";
 
 interface IProps {
@@ -17,8 +14,7 @@ interface IProps {
 }
 
 const HeaderRight: React.FC<IProps> = () => {
-    const {user, friends} = useAppSelector(state => state.userSlice)
-    const dispatch = useAppDispatch();
+    const {user} = useAppSelector(state => state.authSlice)
     const [anchorEl, setAnchorEl] = React.useState<{
         notify: null | HTMLElement;
         messenger: null | HTMLElement;
@@ -62,16 +58,16 @@ const HeaderRight: React.FC<IProps> = () => {
         }
     }
 
-    const renderMenuChat = useMemo(() => {
-        return friends.map((item: IUser, index) => {
-            return <MenuChatItem key={index}
-                                 onClick={() => {
-                                     dispatch(createChatBox(item))
-                                 }}
-                                 user={item} src={item.picture} title={`${item.firstName} ${item.lastName}`}
-                                 description={'Xin chào mọi người'}/>
-        })
-    }, [friends, dispatch])
+    // const renderMenuChat = useMemo(() => {
+    //     return friends.map((item: IUserFull, index: number) => {
+    //         return <MenuChatItem key={index}
+    //                              onClick={() => {
+    //                                  dispatch(createChatBox(item))
+    //                              }}
+    //                              user={item} src={item.userInfo.avatar} title={`${item.userInfo.firstName} ${item.userInfo.lastName}`}
+    //                              description={'Xin chào mọi người'}/>
+    //     })
+    // }, [friends, dispatch])
 
     const handleClose = () => {
         setAnchorEl({
@@ -106,14 +102,14 @@ const HeaderRight: React.FC<IProps> = () => {
                   handleClose={handleClose}
             >
                 <InputSearchMessenger placeholder={'Tìm kiếm trên Messenger'}/>
-                {renderMenuChat}
+                {/*{renderMenuChat}*/}
             </Menu>
             <IconButton onClick={(event) => openMenu(event, 'settings')}>
                 <AvatarCircle
-                    src={user.picture}
+                    src={user.userInfo.avatar}
                     title={'Trang cá nhân của bạn'}/>
             </IconButton>
-            <MultiMenu anchorEl={anchorEl['settings']} handleClose={handleClose} />
+            <MultiMenu anchorEl={anchorEl['settings']} handleClose={handleClose}/>
         </Box>
     </>
 }
@@ -126,7 +122,6 @@ const InputSearchMessenger = styled(InputBase)`
   font-size: 16px;
   margin-bottom: 10px;
 `
-
 
 
 export default HeaderRight;
