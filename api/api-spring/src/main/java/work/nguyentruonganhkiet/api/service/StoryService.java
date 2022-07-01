@@ -2,7 +2,9 @@ package work.nguyentruonganhkiet.api.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import work.nguyentruonganhkiet.api.model.entities.Post;
 import work.nguyentruonganhkiet.api.model.entities.Story;
 import work.nguyentruonganhkiet.api.model.sub.CommentStory;
 import work.nguyentruonganhkiet.api.model.sub.ReactStory;
@@ -66,5 +68,9 @@ public class StoryService implements IBaseService<Story, Long> {
 	public Story commentToStory( Story story , CommentStory commentStory ) {
 		story.getCommentStories().add(commentStory);
 		return this.storyRepository.save(story);
+	}
+
+	public List<Story> findAllByUserId( Long id , Pageable pageable ) {
+		return this.storyRepository.findAllByUserId(id , pageable).stream().map(story -> story.isDelete() ? null : story).collect(Collectors.toList());
 	}
 }

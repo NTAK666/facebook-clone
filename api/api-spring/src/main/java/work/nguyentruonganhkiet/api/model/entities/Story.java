@@ -28,13 +28,13 @@ import java.util.Set;
 public class Story extends BaseEntity {
 
     @NotNull
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String title;
     @NotNull
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String image;
     @NotNull
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String slug;
 
     @OneToMany(mappedBy = "story", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)

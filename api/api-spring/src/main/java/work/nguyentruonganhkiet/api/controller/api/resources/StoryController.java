@@ -14,6 +14,7 @@ import work.nguyentruonganhkiet.api.model.dtos.requests.CommentPostRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.requests.CreateStoryRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.requests.ReactRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.MessageReturnDto;
+import work.nguyentruonganhkiet.api.model.dtos.responses.entities.PostDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.entities.StoryDto;
 import work.nguyentruonganhkiet.api.model.entities.Notification;
 import work.nguyentruonganhkiet.api.model.entities.Story;
@@ -29,6 +30,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 
@@ -65,6 +67,31 @@ public class StoryController {
 
 			return ResponseEntity.ok(MessageReturnDto.<List<StoryDto>>builder().message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).data(storyDtos).build()).getBody();
 
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
+
+	@GetMapping(ALL)
+	public MessageReturnDto<List<StoryDto>> getAllStory( @RequestParam(name = "page", defaultValue = "0") int page , @RequestParam(name = "size", defaultValue = "10") int size , @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
+			Pageable pageable = PageRequest.of(page , size , Sort.by(sortBy));
+
+			User user = userService.findByEmail(userDetails.getUsername());
+
+			List<Story> storys = this.storyService.findAllByUserId(user.getId() , pageable);
+
+			storys.forEach(story -> {
+				Set<CommentStory> commentStorys = story.getCommentStories().stream().sorted(( a , b ) -> b.getCreatedAt().compareTo(a.getCreatedAt())).limit(5).collect(Collectors.toSet());
+				story.setCommentStories(commentStorys);
+			});
+
+			if (storys.isEmpty())
+				return MessageReturnDto.<List<StoryDto>>builder().data(null).message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).build();
+
+			List<StoryDto> storiesDtos = storys.stream().map(story -> modelMapper.map(story , StoryDto.class)).toList();
+
+			return ResponseEntity.ok(MessageReturnDto.<List<StoryDto>>builder().data(storiesDtos).message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).paginate(pageable).build()).getBody();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}

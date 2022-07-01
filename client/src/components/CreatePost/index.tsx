@@ -1,16 +1,15 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CloseIcon from '@mui/icons-material/Close';
 import PublicIcon from '@mui/icons-material/Public';
-import { Avatar, Box, Button, IconButton, Modal, TextareaAutosize } from "@mui/material";
-import React, { useState } from 'react';
-import { appendPosts } from '../../app/features/PostSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hook';
-import { IPostCreate } from "../../app/models/Post";
-import { useCreatePostMutation } from "../../app/services/PostService";
-import { RootState } from '../../app/store';
+import {Avatar, Box, Button, IconButton, Modal, TextareaAutosize} from "@mui/material";
+import React, {useRef, useState} from 'react';
+import {appendPosts} from '../../app/features/PostSlice';
+import {useAppDispatch, useAppSelector} from '../../app/hook';
+import {IPostCreate} from "../../app/models/Post";
+import {useCreatePostMutation} from "../../app/services/PostService";
+import {RootState} from '../../app/store';
 import LoadingCircle from '../Loading/LoadingCircle';
 import styles from './create-post.module.scss';
-
 
 interface Props {
 }
@@ -19,9 +18,11 @@ interface Props {
 const CreatePost: React.FC<Props> = () => {
     const [open, setOpen] = useState(false);
     const [bodyPost, setBodyPost] = useState('');
-    const [createPostApi, { isLoading }] = useCreatePostMutation();
-    const { user } = useAppSelector((state: RootState) => state.authSlice);
+    const [createPostApi, {isLoading}] = useCreatePostMutation();
+    const {user} = useAppSelector((state: RootState) => state.authSlice);
     const dispatch = useAppDispatch();
+    const thumbnailRef = useRef<any>(null)
+    const [thumbnail, setThumbnail] = useState<string>('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,10 +35,11 @@ const CreatePost: React.FC<Props> = () => {
     const handleCreatePost = async () => {
         const request: IPostCreate = {
             body: bodyPost,
+            thumbnail: thumbnail,
         }
         await createPostApi(request).then((response: any) => {
             if (response.data.status === 200) {
-                const { data } = response.data;
+                const {data} = response.data;
                 dispatch(appendPosts(data));
                 setBodyPost('');
                 setOpen(false);
@@ -45,16 +47,30 @@ const CreatePost: React.FC<Props> = () => {
         })
     }
 
+    const handleThumbnail = (e: any) => {
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const base64 = reader.result as string;
+            setThumbnail(base64);
+            thumbnailRef.current.value = null;
+        }
+    }
+
     if (isLoading) {
-        return <LoadingCircle />
+        return <LoadingCircle/>
     }
 
     return (
-        <Box sx={{ padding: '0 15px' }}>
+        <Box sx={{padding: '0 15px'}}>
             <Box className={styles.createPost}>
-                <Box sx={{ display: 'flex' }}>
-                    <Avatar alt={user.email} src={user.userInfo.avatar || ""} />
-                    <Button onClick={handleClickOpen} className={styles.buttonCreate}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`} ơi, bạn đang nghĩ gì
+                <Box sx={{display: 'flex'}}>
+                    <Avatar alt={user.email} src={user.userInfo.avatar || ""}/>
+                    <Button onClick={handleClickOpen}
+                            className={styles.buttonCreate}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`} ơi,
+                        bạn đang nghĩ gì
                         thế?</Button>
                     <Modal
                         open={open}
@@ -66,18 +82,20 @@ const CreatePost: React.FC<Props> = () => {
                             <Box className={styles.header}>
                                 <h3>Tạo bài viết</h3>
                                 <IconButton onClick={handleClose} className={styles.closeButton} aria-label="delete">
-                                    <CloseIcon />
+                                    <CloseIcon/>
                                 </IconButton>
                             </Box>
-                            <hr />
+                            <hr/>
                             <Box className={styles.body}>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Avatar alt={user.email} src={user.userInfo.avatar || ""} sx={{ width: '45px', height: '45px' }} />
+                                <Box sx={{display: 'flex', gap: 1}}>
+                                    <Avatar alt={user.email} src={user.userInfo.avatar || ""}
+                                            sx={{width: '45px', height: '45px'}}/>
                                     <Box>
-                                        <span className={styles.name}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`}</span>
+                                        <span
+                                            className={styles.name}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`}</span>
                                         <Button className={styles.buttonStatus}><PublicIcon
-                                            sx={{ fontSize: '1rem' }} /><span
-                                                className={styles.status}>Công khai</span><ArrowDropDownIcon /></Button>
+                                            sx={{fontSize: '1rem'}}/><span
+                                            className={styles.status}>Công khai</span><ArrowDropDownIcon/></Button>
                                     </Box>
                                 </Box>
                                 <Box>
@@ -98,15 +116,30 @@ const CreatePost: React.FC<Props> = () => {
                                         }}
                                     />
                                 </Box>
+                                <Box className={styles.wrapperThumbnail}>
+                                    {thumbnail && (
+                                        <Box className={styles.thumbnailItem}>
+                                            <IconButton className={styles.thumbnailClose}>
+                                                <CloseIcon onClick={() => {
+                                                    setThumbnail('');
+                                                }} sx={{color: 'white'}}/>
+                                            </IconButton>
+                                            <img
+                                                src={thumbnail}
+                                                alt=""/>
+                                        </Box>
+                                    )}
+                                </Box>
                                 <Box className={styles.buttonGroup}>
                                     <Box>
                                         <Button className={styles.buttonAdd}>Thêm vào bài viết</Button>
                                     </Box>
-                                    <Box sx={{ display: 'flex' }}>
+                                    <Box sx={{display: 'flex'}}>
                                         <IconButton className={styles.buttonFunction}>
                                             <span className={styles.addImage}></span>
-                                            <label htmlFor=""></label>
-                                            <input type="file" hidden/>
+                                            <label htmlFor="upload-file" className={'wrapper-ab'}></label>
+                                            <input id={"upload-file"} ref={thumbnailRef} onChange={handleThumbnail}
+                                                   type="file" hidden/>
                                         </IconButton>
                                         <IconButton className={styles.buttonFunction}><span
                                             className={styles.addTag}></span></IconButton>
@@ -127,12 +160,12 @@ const CreatePost: React.FC<Props> = () => {
                         </Box>
                     </Modal>
                 </Box>
-                <hr />
-                <Box sx={{ width: 1 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-around', }}>
-                        <Button sx={{ gap: 1 }} className={styles.button}>
+                <hr/>
+                <Box sx={{width: 1}}>
+                    <Box sx={{display: 'flex', justifyContent: 'space-around',}}>
+                        <Button sx={{gap: 1}} className={styles.button}>
                             <svg fill="currentColor" viewBox="0 0 24 24" width="25px" height="25px"
-                                style={{ color: '#F4556F' }}
+                                 style={{color: '#F4556F'}}
                             >
                                 <g fillRule="evenodd" transform="translate(-444 -156)">
                                     <g>
@@ -150,7 +183,7 @@ const CreatePost: React.FC<Props> = () => {
                             gap: 1,
                         }} className={styles.button}>
                             <svg fill="currentColor" viewBox="0 0 24 24" width="25px" height="25px"
-                                style={{ color: '#58C472' }}
+                                 style={{color: '#58C472'}}
                             >
                                 <g fillRule="evenodd" transform="translate(-444 -156)">
                                     <g>
@@ -158,8 +191,8 @@ const CreatePost: React.FC<Props> = () => {
                                             d="m96.968 22.425-.648.057a2.692 2.692 0 0 1-1.978-.625 2.69 2.69 0 0 1-.96-1.84L92.01 4.32a2.702 2.702 0 0 1 .79-2.156c.47-.472 1.111-.731 1.774-.79l2.58-.225a.498.498 0 0 1 .507.675 4.189 4.189 0 0 0-.251 1.11L96.017 18.85a4.206 4.206 0 0 0 .977 3.091s.459.364-.026.485m8.524-16.327a1.75 1.75 0 1 1-3.485.305 1.75 1.75 0 0 1 3.485-.305m5.85 3.011a.797.797 0 0 0-1.129-.093l-3.733 3.195a.545.545 0 0 0-.062.765l.837.993a.75.75 0 1 1-1.147.966l-2.502-2.981a.797.797 0 0 0-1.096-.12L99 14.5l-.5 4.25c-.06.674.326 2.19 1 2.25l11.916 1.166c.325.026 1-.039 1.25-.25.252-.21.89-.842.917-1.166l.833-8.084-3.073-3.557z"
                                             transform="translate(352 156.5)"></path>
                                         <path fillRule="nonzero"
-                                            d="m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z"
-                                            transform="translate(352 156.5)"></path>
+                                              d="m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z"
+                                              transform="translate(352 156.5)"></path>
                                     </g>
                                 </g>
                             </svg>
@@ -168,7 +201,7 @@ const CreatePost: React.FC<Props> = () => {
                             gap: 1,
                         }} className={styles.button}>
                             <svg fill="currentColor" viewBox="0 0 24 24" width="25px" height="25px"
-                                style={{ color: '#F8C03E' }}
+                                 style={{color: '#F8C03E'}}
                             >
                                 <g fillRule="evenodd" transform="translate(-444 -156)">
                                     <g>
@@ -176,8 +209,8 @@ const CreatePost: React.FC<Props> = () => {
                                             d="M107.285 13c.49 0 .841.476.712.957-.623 2.324-2.837 4.043-5.473 4.043-2.636 0-4.85-1.719-5.473-4.043-.13-.48.222-.957.712-.957h9.522z"
                                             transform="translate(353.5 156.5)"></path>
                                         <path fillRule="nonzero"
-                                            d="M114.024 11.5c0 6.351-5.149 11.5-11.5 11.5s-11.5-5.149-11.5-11.5S96.173 0 102.524 0s11.5 5.149 11.5 11.5zm-2 0a9.5 9.5 0 1 0-19 0 9.5 9.5 0 0 0 19 0z"
-                                            transform="translate(353.5 156.5)"></path>
+                                              d="M114.024 11.5c0 6.351-5.149 11.5-11.5 11.5s-11.5-5.149-11.5-11.5S96.173 0 102.524 0s11.5 5.149 11.5 11.5zm-2 0a9.5 9.5 0 1 0-19 0 9.5 9.5 0 0 0 19 0z"
+                                              transform="translate(353.5 156.5)"></path>
                                         <path
                                             d="M99.524 8.5c0 .829-.56 1.5-1.25 1.5s-1.25-.671-1.25-1.5.56-1.5 1.25-1.5 1.25.671 1.25 1.5m8.5 0c0 .829-.56 1.5-1.25 1.5s-1.25-.671-1.25-1.5.56-1.5 1.25-1.5 1.25.671 1.25 1.5m-.739 4.5h-9.522c-.49 0-.841.476-.712.957.623 2.324 2.837 4.043 5.473 4.043 2.636 0 4.85-1.719 5.473-4.043.13-.48-.222-.957-.712-.957m-2.165 2c-.667.624-1.592 1-2.596 1a3.799 3.799 0 0 1-2.596-1h5.192"
                                             transform="translate(353.5 156.5)"></path>

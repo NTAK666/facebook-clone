@@ -24,31 +24,31 @@ import java.util.Date;
 @EntityListeners(UserInfoObsever.class)
 public class UserInfo extends BaseEntity {
 
-    @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String firstName;
-    @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String lastName;
-    @Column(columnDefinition = "TEXT")
-    private String phone;
-    @Column(columnDefinition = "TEXT")
-    private String address;
-    @Column(columnDefinition = "TEXT")
-    private String avatar;
-    @Column(columnDefinition = "TEXT")
-    private String coverImage;
-    @Column(columnDefinition = "TEXT")
-    private String about;
-    @Column(columnDefinition = "TEXT")
-    private String bio;
-    @Column(columnDefinition = "TEXT")
-    private String slug;
-    private Date birthday;
-    private boolean gender;
+	@NotNull
+	@Column(columnDefinition = "LONGTEXT")
+	private String firstName;
+	@NotNull
+	@Column(columnDefinition = "LONGTEXT")
+	private String lastName;
+	@Column(columnDefinition = "LONGTEXT")
+	private String phone;
+	@Column(columnDefinition = "LONGTEXT")
+	private String address;
+	@Column(columnDefinition = "LONGTEXT")
+	private String avatar;
+	@Column(columnDefinition = "LONGTEXT")
+	private String coverImage;
+	@Column(columnDefinition = "LONGTEXT")
+	private String about;
+	@Column(columnDefinition = "LONGTEXT")
+	private String bio;
+	@Column(columnDefinition = "LONGTEXT")
+	private String slug;
+	private Date birthday;
+	private boolean gender;
 
-    @OneToOne(mappedBy = "userInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private User users;
+	@OneToOne(mappedBy = "userInfo", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
+	private User users;
 
 }

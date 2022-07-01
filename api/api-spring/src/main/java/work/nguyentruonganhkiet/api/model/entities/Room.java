@@ -22,7 +22,7 @@ import java.util.Set;
 @SuperBuilder
 public class Room extends BaseEntity {
 
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	public String name;
 
 	@ManyToMany(fetch = FetchType.EAGER)

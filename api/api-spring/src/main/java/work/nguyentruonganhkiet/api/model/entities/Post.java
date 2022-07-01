@@ -28,11 +28,11 @@ import java.util.Set;
 @EntityListeners(PostObserve.class)
 public class Post extends BaseEntity {
 
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	private String slug;
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	private String thumbnail;
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	@NotNull
 	private String body;
 	@Column(columnDefinition = "int default 0")

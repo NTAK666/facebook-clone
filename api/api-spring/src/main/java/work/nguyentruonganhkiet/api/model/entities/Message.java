@@ -21,9 +21,9 @@ import javax.validation.constraints.NotNull;
 public class Message extends BaseEntity {
 
 	@NotNull
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	public String message;
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	public String media;
 
 	@ManyToOne(fetch = FetchType.EAGER)
