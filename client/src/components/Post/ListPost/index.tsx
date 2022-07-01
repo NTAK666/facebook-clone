@@ -1,12 +1,12 @@
 import React from 'react';
-import {List} from "@mui/material";
+import { List } from "@mui/material";
 import styled from "@emotion/styled";
 
 interface IProps {
     children: React.ReactNode
 }
 
-const ListPost: React.FC<IProps> = ({children}) => {
+const ListPost: React.FC<IProps> = ({ children }) => {
     return (
         <ListStyled>
             {children}
@@ -16,6 +16,9 @@ const ListPost: React.FC<IProps> = ({children}) => {
 
 const ListStyled = styled(List)`
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
 `
 
 export default ListPost;

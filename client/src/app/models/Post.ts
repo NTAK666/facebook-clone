@@ -1,11 +1,23 @@
-import { IUser } from "./User";
+import {IUserFull} from "./User";
 
-export interface IPost {
-    id: string;
-    text: string;
-    image: string;
-    likes: number;
-    tags: string[];
-    publishDate: string;
-    owner: IUser;
+export interface IPostFull {
+    id: number
+    createdAt: string
+    updatedAt: string
+    title: any
+    slug: any
+    thumbnail: any
+    description: any
+    body: string
+    views: string
+    cover: any
+    user: IUserFull
+    reactPosts: any[]
+    commentPosts: any[]
+    delete: boolean
+}
+
+export interface IPostCreate {
+    thumbnail?: string;
+    body?: string;
 }

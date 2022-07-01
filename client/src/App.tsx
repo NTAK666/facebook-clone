@@ -18,7 +18,6 @@ import NotFound from "./components/NotFound/404";
 function App() {
     const {isLoading} = useGetMeQuery();
 
-
     if (isLoading) {
         return <LoadingCircle/>;
     }

@@ -3,38 +3,49 @@ import {Box, Grid} from "@mui/material";
 import styles from "../ProfileIntroduce/profile-introduce.module.scss";
 import CreatePost from "../../CreatePost";
 import ListPost from "../../Post/ListPost";
-import {useGetPostsQuery} from "../../../app/services/PostService";
-import {IPost} from "../../../app/models/Post";
+import {useGetPostsByMeQuery} from "../../../app/services/PostService";
 import PostNormal from "../../Post/PostNormal";
-import moment from "moment";
+import PostSkeleton from "../../Skeleton/PostSkeleton";
+import {useAppSelector} from "../../../app/hook";
+
 
 const ProfilePost = () => {
-    const {data} = useGetPostsQuery();
+    const {isLoading} = useGetPostsByMeQuery();
+    const {posts} = useAppSelector(state => state.postSlice);
 
     const renderPosts = () => {
-        if (!data) {
-            return null;
+        if (isLoading) {
+            return (
+                <>
+                    <PostSkeleton/>
+                    <PostSkeleton/>
+                </>
+            )
         }
-        return data.data.map((post: IPost) => {
-            return <PostNormal
-                key={post.id}
-                postId={post.id}
-                likeNumber={post.likes}
-                time={moment(post.publishDate).fromNow()}
-                username={post.owner.lastName}
-                content={post.text}
-                image={post.image}
-            />
-        })
+
+        if (posts.length > 0) {
+            return posts.map((post, index) => {
+                return (
+                    <PostNormal
+                        key={index}
+                        postId={post.id}
+                        likeNumber={post.reactPosts.length}
+                        time={'1 giờ trước'}
+                        username={`${post.user.userInfo.firstName} ${post.user.userInfo.lastName}`}
+                        content={post.body}
+                        image={post.thumbnail}
+                    />
+                )
+            })
+        }
     }
     return (
-            <Box className={styles.post}>
-                <CreatePost name={'Nguyễn Phan Huy Hiếu'}
-                            avatar={'https://scontent.fdad3-4.fna.fbcdn.net/v/t1.6435-9/186540483_2924150637822211_8758031143615848898_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=TdIrZhnDatAAX8jrsOK&_nc_ht=scontent.fdad3-4.fna&oh=00_AT9sQ-hwAIv0DdwDuYZjmXfQj8O71xLPakrFhho6AVtAHQ&oe=62D8D521'}/>
-                <ListPost>
-                    {renderPosts()}
-                </ListPost>
-            </Box>
+        <Box className={styles.post}>
+            <CreatePost />
+            <ListPost>
+                {renderPosts()}
+            </ListPost>
+        </Box>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Box,
@@ -19,9 +19,9 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 // @ts-ignore
-import {ColorExtractor} from 'react-color-extractor';
+import { ColorExtractor } from 'react-color-extractor';
 import styled from "@emotion/styled";
-import {LikeCircle} from "../../Icons";
+import { LikeCircle } from "../../Icons";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import Fancybox from "../../Fancybox";
@@ -36,11 +36,11 @@ interface IProps {
     likeNumber?: number;
     commentNumber?: number;
     shareNumber?: number;
-    postId: string;
+    postId: number;
 }
 
 const PostNormal: React.FC<IProps> = (props) => {
-    const {time, postId, username, commentNumber = 0, shareNumber = 0, likeNumber = 0, avatar, content, image} = props;
+    const { time, postId, username, commentNumber = 0, shareNumber = 0, likeNumber = 0, avatar, content, image } = props;
     const [ratio, setRatio] = React.useState<number>(3 / 4);
     const [colorImage, setColorImage] = useState(null);
     const [showMore, setShowMore] = useState(false);
@@ -53,8 +53,8 @@ const PostNormal: React.FC<IProps> = (props) => {
         setAnchorEl(null);
     };
 
-    const onLoadImage = ({target}: any) => {
-        const {offsetWidth, offsetHeight} = target;
+    const onLoadImage = ({ target }: any) => {
+        const { offsetWidth, offsetHeight } = target;
         setRatio(offsetWidth / offsetHeight);
     }
 
@@ -79,14 +79,17 @@ const PostNormal: React.FC<IProps> = (props) => {
                         </ButtonStyled>
                     </>
                 )
+            } else {
+                return (
+                    <>
+                        <Typography className={styles.bodyText}>
+                            {content}
+                        </Typography>
+                    </>
+                )
             }
-            return (
-                <Typography className={styles.bodyText}>
-                    {content}
-                </Typography>
-            )
         }
-        return null;
+
     }
 
     return (
@@ -94,16 +97,16 @@ const PostNormal: React.FC<IProps> = (props) => {
             <Paper className={styles.root}>
                 <Box className={styles.header}>
                     <Box className={styles.headerLeft}>
-                        <Avatar src={avatar} sx={{width: '40px', height: '40px'}}/>
+                        <Avatar src={avatar} sx={{ width: '40px', height: '40px' }} />
                         <Box className={styles.headerTitle}>
-                            <Typography fontWeight={'bold'} sx={{fontSize: '15px'}}>{username}</Typography>
-                            <Typography sx={{fontSize: '13px'}}>{time}</Typography>
+                            <Typography fontWeight={'bold'} sx={{ fontSize: '15px' }}>{username}</Typography>
+                            <Typography sx={{ fontSize: '13px' }}>{time}</Typography>
                         </Box>
                     </Box>
 
                     <Box>
                         <IconButton onClick={handleClick}>
-                            <MoreHorizIcon/>
+                            <MoreHorizIcon />
                         </IconButton>
                         <Menu
                             id="basic-menu"
@@ -124,13 +127,13 @@ const PostNormal: React.FC<IProps> = (props) => {
                         >
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <ReportGmailerrorredIcon/>
+                                    <ReportGmailerrorredIcon />
                                 </ListItemIcon>
                                 <Typography>Báo cáo bài viết</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <NotificationsNoneIcon/>
+                                    <NotificationsNoneIcon />
                                 </ListItemIcon>
                                 <Typography>Bật thông báo về bài viết này</Typography>
                             </MenuItem>
@@ -141,46 +144,48 @@ const PostNormal: React.FC<IProps> = (props) => {
                     <Box>
                         {renderText()}
                     </Box>
-                    <Fancybox>
-                        <Box className={styles.bodyImage}>
-                        <span style={colorImage ? {backgroundColor: colorImage[1]} : {}} className={styles.bgrImage}></span>
-                            <Box className={styles.wrapperImage} sx={{width: `calc((100vh - 325px) * ${ratio})`}}>
-                                <ColorExtractor getColors={getColors}>
-                                    <img style={{cursor: 'pointer'}} onLoad={onLoadImage} data-fancybox={postId}
-                                         src={image} alt=""/>
-                                </ColorExtractor>
+                    {image && (
+                        <Fancybox>
+                            <Box className={styles.bodyImage}>
+                                <span style={colorImage ? { backgroundColor: colorImage[1] } : {}} className={styles.bgrImage}></span>
+                                <Box className={styles.wrapperImage} sx={{ width: `calc((100vh - 325px) * ${ratio})` }}>
+                                    <ColorExtractor getColors={getColors}>
+                                        <img style={{ cursor: 'pointer' }} onLoad={onLoadImage} data-fancybox={postId}
+                                            src={image} alt="" />
+                                    </ColorExtractor>
+                                </Box>
                             </Box>
-                        </Box>
-                    </Fancybox>
+                        </Fancybox>
+                    )}
                 </Box>
                 <Box className={styles.footer}>
                     <Box className={styles.footerText}>
-                        <Box sx={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <LikeCircle/>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <LikeCircle />
                             <Typography>{likeNumber} lượt thích</Typography>
                         </Box>
-                        <Box sx={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <Typography>{commentNumber} bình luận</Typography>
                             <Typography>{shareNumber} lượt chia sẻ</Typography>
                         </Box>
                     </Box>
-                    <Divider sx={{width: '100%'}}/>
+                    <Divider sx={{ width: '100%' }} />
                     <Grid container className={styles.footerActions}>
                         <Grid item xs={4}>
-                            <ButtonAction startIcon={<FavoriteBorderIcon/>}>Yêu thích</ButtonAction>
+                            <ButtonAction startIcon={<FavoriteBorderIcon />}>Yêu thích</ButtonAction>
                         </Grid>
                         <Grid item xs={4}>
-                            <ButtonAction startIcon={<ChatBubbleOutlineIcon/>}>Bình luận</ButtonAction>
+                            <ButtonAction startIcon={<ChatBubbleOutlineIcon />}>Bình luận</ButtonAction>
                         </Grid>
                         <Grid item xs={4}>
-                            <ButtonAction startIcon={<ReplyOutlinedIcon/>}>Chia sẻ</ButtonAction>
+                            <ButtonAction startIcon={<ReplyOutlinedIcon />}>Chia sẻ</ButtonAction>
                         </Grid>
                     </Grid>
                 </Box>
-                <Box sx={{padding: '0 10px'}}>
-                    <Divider sx={{width: '100%'}}/>
-                    <Comment postId={postId}/>
-                </Box>
+                {/* <Box sx={{ padding: '0 10px' }}>
+                    <Divider sx={{ width: '100%' }} />
+                    <Comment />
+                </Box> */}
             </Paper>
         </ListItem>
     )

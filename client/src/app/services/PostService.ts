@@ -1,28 +1,41 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {IPost} from "../models/Post";
+import {IPostCreate, IPostFull} from "../models/Post";
 import {Response} from "../models/Response";
-import {IComment} from "../models/Comment";
 
-const BASE_URL = process.env.REACT_APP_URL_API;
-const APP_ID = process.env.REACT_APP_APP_ID || '';
+const BASE_URL = process.env.REACT_APP_URL_API || "";
 
 export const postService = createApi({
     reducerPath: "postService",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${BASE_URL}/post`,
+        baseUrl: `${BASE_URL}/posts`,
         prepareHeaders(headers) {
-            headers.set('app-id', APP_ID)
+            const accessToken = localStorage.getItem("auth");
+            headers.set("Authorization", `Bearer ${accessToken}`);
             return headers;
         },
     }),
+    tagTypes: ["IPostFull", "IPostCreate"],
     endpoints: (build) => ({
-        getPosts : build.query<Response<IPost[]>, void>({
-            query: () => `?limit=5&page=1`
+        createPost: build.mutation<Response<IPostFull>, IPostCreate>({
+            query: (data) => ({
+                url: "/create",
+                method: "POST",
+                body: data,
+            }),
         }),
-        getCommentByPost : build.query<Response<IComment[]>, string>({
-            query: (postId) => `/${postId}/comment?limit=5&page=1`
+        getPostsByFriend: build.query<Response<IPostFull[]>, void>({
+            query: () => ({
+                url: "/friends?page=0&size=10",
+                method: "GET",
+            }),
+        }),
+        getPostsByMe: build.query<Response<IPostFull[]>, void>({
+            query: () => ({
+                url: "/all",
+                method: "GET",
+            }),
         })
     }),
 });
 
-export const {useGetPostsQuery, useGetCommentByPostQuery} = postService;
+export const {useCreatePostMutation, useGetPostsByFriendQuery, useGetPostsByMeQuery} = postService;

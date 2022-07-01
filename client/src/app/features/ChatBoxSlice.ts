@@ -1,17 +1,17 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IUserFull} from "../models/User";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IUserFull } from "../models/User";
 
 export type IChatBox = {
-    user: IUserFull,
-    status: "SHOW" | "HIDE"
-}
+    user: IUserFull;
+    status: "SHOW" | "HIDE";
+};
 
 interface IState {
-    chatbox: IChatBox[]
+    chatbox: IChatBox[];
 }
 
 const initialState: IState = {
-    chatbox: []
+    chatbox: [],
 };
 
 const formatChatBox = (list: IChatBox[]): IChatBox[] => {
@@ -19,82 +19,81 @@ const formatChatBox = (list: IChatBox[]): IChatBox[] => {
         if (index < 2) {
             return {
                 ...item,
-                status: 'SHOW'
-            }
+                status: "SHOW",
+            };
         } else {
-            return {...item, status: 'HIDE'}
+            return { ...item, status: "HIDE" };
         }
-    })
-}
+    });
+};
 
 const chatBoxSlice = createSlice({
     name: "chatSlice",
     initialState,
     reducers: {
-        createChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
+        createChatBox: (state: IState, { payload }: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
-            const index = list.findIndex(item => item.user.id === payload.id);
+            const index = list.findIndex((item) => item.user.id === payload.id);
             if (index !== -1) {
                 return;
             }
 
             let object: IChatBox = {
                 user: payload,
-                status: "SHOW"
-            }
+                status: "SHOW",
+            };
             list = [object, ...list];
 
-            if (list.filter(item => item.status === "SHOW").length > 2) {
-                list = formatChatBox(list)
+            if (list.filter((item) => item.status === "SHOW").length > 2) {
+                list = formatChatBox(list);
             }
 
             state.chatbox = [...list];
         },
-        closeChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
-            state.chatbox = state.chatbox.filter(item => item.user.id !== payload.id);
+        closeChatBox: (state: IState, { payload }: PayloadAction<IUserFull>) => {
+            state.chatbox = state.chatbox.filter((item) => item.user.id !== payload.id);
         },
-        openChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
+        openChatBox: (state: IState, { payload }: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
-            const index = list.findIndex(item => item.user.id === payload.id);
+            const index = list.findIndex((item) => item.user.id === payload.id);
 
             if (index <= -1) return;
 
             let object: IChatBox = {
                 user: list[index].user,
-                status: "SHOW"
-            }
+                status: "SHOW",
+            };
 
             list.splice(index, 1);
 
             list = [object, ...list];
 
-            if (list.filter(item => item.status === "SHOW").length > 2) {
-                list = formatChatBox(list)
+            if (list.filter((item) => item.status === "SHOW").length > 2) {
+                list = formatChatBox(list);
             }
 
             state.chatbox = [...list];
         },
-        minimizeChatBox: (state, {payload}: PayloadAction<IUserFull>) => {
+        minimizeChatBox: (state: IState, { payload }: PayloadAction<IUserFull>) => {
             let list: IChatBox[] = [...state.chatbox];
-            const index = list.findIndex(item => item.user.id === payload.id);
+            const index = list.findIndex((item) => item.user.id === payload.id);
 
             const object: IChatBox = {
                 user: list[index].user,
-                status: "HIDE"
-            }
+                status: "HIDE",
+            };
             list.splice(index, 1);
 
             state.chatbox = [...list, object];
         },
-        removeAllHiddenBox: (state) => {
+        removeAllHiddenBox: (state: IState) => {
             state.chatbox = [];
-
-        }
-
+        },
     },
-    extraReducers: {}
+    extraReducers: {},
 });
 
-export const {createChatBox, closeChatBox, openChatBox, minimizeChatBox, removeAllHiddenBox} = chatBoxSlice.actions;
+export const { createChatBox, closeChatBox, openChatBox, minimizeChatBox, removeAllHiddenBox } =
+    chatBoxSlice.actions;
 
 export default chatBoxSlice.reducer;
