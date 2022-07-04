@@ -1,25 +1,111 @@
-.root {
-  background: var(--background-home);
+.wrapper {
   height: 100vh;
-  .navbar {
-    width: var(--navbar-width);
-    background: white;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
-    .header {
-      padding: 10px;
-    }
-  }
-  .content {
+  .wrapperContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
     .header {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      flex-shrink: 1;
       padding: 10px;
+    }
+
+    .content {
+      flex-grow: 1;
+      margin-left: var(--navbar-width);
+
+      .root {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+
+        .createButton {
+          width: 220px;
+          height: 330px;
+          background-image: linear-gradient(to bottom right, #6344ed, #8bd8ff);
+          border-radius: 12px;
+
+          .wrapperIcon {
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+
+        .wrapperEditStory {
+          width: 972px;
+          height: 85%;
+          background-color: white;
+          border-radius: 8px;
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .wrapperImagePreview {
+            position: relative;
+            flex-grow: 1;
+            border-radius: 8px;
+            overflow: hidden;
+          }
+
+          .footer {
+            flex-shrink: 1;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+
+            .zoomImage {
+              width: 30%;
+              display: flex;
+              align-items: center;
+            }
+
+            .buttonRotate {
+              background-color: #d8dadf;
+              border-radius: 6px;
+              padding: 0 15px;
+              display: flex;
+              gap: 5px;
+            }
+          }
+        }
+      }
+
+      .wrapperShowStory {
+        width: var(--navbar-width);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 0 20px;
+        height: 72px;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+        .buttonShow {
+          padding: 0 20px;
+          background-color: #E4E6EB;
+          flex-grow: 1;
+          height: 36px;
+          border-radius: 6px;
+          font-weight: bold;
+        }
+      }
     }
   }
 }

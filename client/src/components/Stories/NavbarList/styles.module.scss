@@ -1,0 +1,39 @@
+.root {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  width: var(--navbar-width);
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  padding: 10px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrapperStoriesMe {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrapperStoriesFriend {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+
+  }
+}

@@ -1,7 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
-import Profile from './pages/Profile';
 import WatchPage from "./pages/Watch";
 import GamePage from "./pages/Game";
 import MarketplacePage from "./pages/Marketplace";
@@ -14,9 +13,7 @@ import {useGetMeQuery} from "./app/services/AuthService";
 import LoadingCircle from "./components/Loading/LoadingCircle";
 import PrivateRoute from "./components/Router/PrivateRoute";
 import NotFound from "./components/NotFound/404";
-import AboutProfile from "./pages/Profile/AboutProfile";
-import FriendProfile from "./pages/Profile/FriendProfile";
-import PhotoProfile from "./pages/Profile/PhotoProfile";
+import StoryDetail from "./pages/Stories/Detail";
 
 function App() {
     const {isLoading} = useGetMeQuery();
@@ -38,12 +35,9 @@ function App() {
                 <Route path="stories">
                     <Route index element={<StoriesPage/>}/>
                     <Route path="create" element={<CreateStories/>}/>
+                    <Route path=":id" element={<StoryDetail/>}/>
                 </Route>
             </Route>
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="/about" element={<AboutProfile/>}/>
-            <Route path="/friends" element={<FriendProfile/>}/>
-            <Route path="/photos" element={<PhotoProfile/>}/>
             <Route path="test" element={<Test/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>

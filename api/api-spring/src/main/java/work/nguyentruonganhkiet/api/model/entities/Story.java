@@ -33,7 +33,6 @@ public class Story extends BaseEntity {
     @NotNull
     @Column(columnDefinition = "LONGTEXT")
     private String image;
-    @NotNull
     @Column(columnDefinition = "LONGTEXT")
     private String slug;
 

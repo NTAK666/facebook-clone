@@ -12,6 +12,7 @@ import work.nguyentruonganhkiet.api.model.dtos.requests.AddFriendRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.requests.ChangeFriendStatusDto;
 import work.nguyentruonganhkiet.api.model.dtos.requests.UpdateUserRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.MessageReturnDto;
+import work.nguyentruonganhkiet.api.model.dtos.responses.entities.FriendDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.entities.UserHaftDto;
 import work.nguyentruonganhkiet.api.model.entities.Friend;
 import work.nguyentruonganhkiet.api.model.entities.Notification;
@@ -25,7 +26,9 @@ import work.nguyentruonganhkiet.api.service.RoomService;
 import work.nguyentruonganhkiet.api.service.UserService;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static work.nguyentruonganhkiet.api.utils.constant.API.*;
 import static work.nguyentruonganhkiet.api.utils.constant.STATUS.HTTP_OK;
@@ -37,162 +40,188 @@ import static work.nguyentruonganhkiet.api.utils.constant.STATUS.HTTP_OK_MESSAGE
 @RequestMapping(API_ENDPOINTS_USERS)
 public class UserController {
 
-    private final UserService userService;
-    private final PostService postService;
-    private final NotificationService notificationService;
-    private final ModelMapper modelMapper;
-    private final RoomService roomService;
+	private final UserService userService;
+	private final PostService postService;
+	private final NotificationService notificationService;
+	private final ModelMapper modelMapper;
+	private final RoomService roomService;
 
-    @Autowired
-    public UserController(UserService userService, PostService postService, NotificationService notificationService, ModelMapper modelMapper, RoomService roomService) {
-        this.userService = userService;
-        this.postService = postService;
-        this.notificationService = notificationService;
-        this.modelMapper = modelMapper;
-        this.roomService = roomService;
-    }
+	@Autowired
+	public UserController( UserService userService , PostService postService , NotificationService notificationService , ModelMapper modelMapper , RoomService roomService ) {
+		this.userService = userService;
+		this.postService = postService;
+		this.notificationService = notificationService;
+		this.modelMapper = modelMapper;
+		this.roomService = roomService;
+	}
 
-    @GetMapping(GET_ID)
-    public MessageReturnDto<?> getUser(@PathVariable("id") Long id, @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+	@GetMapping(GET_ID)
+	public MessageReturnDto<?> getUser( @PathVariable("id") Long id , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            User user = userService.findByEmail(userDetails.getUsername());
+			User user = userService.findByEmail(userDetails.getUsername());
 
-            User u = userService.findById(id);
+			User u = userService.findById(id);
 
-            UserHaftDto userHaftDto = modelMapper.map(u, UserHaftDto.class);
+			UserHaftDto userHaftDto = modelMapper.map(u , UserHaftDto.class);
 
-            return ResponseEntity.ok(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userHaftDto).build()).getBody();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
-    }
+			return ResponseEntity.ok(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userHaftDto).build()).getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
 
-    @GetMapping(GET_FRIENDS)
-    public MessageReturnDto getAllFriends(@Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+	@GetMapping(GET_FRIENDS)
+	public MessageReturnDto getAllFriends( @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            User user = userService.findByEmail(userDetails.getUsername());
+			User user = userService.findByEmail(userDetails.getUsername());
 
-            List<User> fs = user.getFriends().stream().filter(f -> f.getStatus().equals(FriendStatus.ACCEPTED)).map(Friend::getUser).toList();
+			List<Friend> fs = user.getFriends().stream().filter(f -> f.getStatus().equals(FriendStatus.ACCEPTED)).toList();
 
-            List<UserHaftDto> userHaftDtos = fs.stream().map(f -> this.modelMapper.map(f, UserHaftDto.class)).toList();
+			List<FriendDto> userHaftDtos = fs.stream().map(f -> this.modelMapper.map(f , FriendDto.class)).toList();
 
-            return ResponseEntity.ok(MessageReturnDto.<List<UserHaftDto>>builder().message(HTTP_OK_MESSAGE).status(HTTP_OK).data(userHaftDtos).build()).getBody();
+			return ResponseEntity.ok(MessageReturnDto.<List<FriendDto>>builder().message(HTTP_OK_MESSAGE).status(HTTP_OK).data(userHaftDtos).build()).getBody();
 
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
 
-    }
+	}
 
-    @PutMapping(SETTINGS_UPDATE)
-    public MessageReturnDto<?> updateProfile(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto, @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
-            User user = userService.findByEmail(userDetails.getUsername());
+	@PutMapping(SETTINGS_UPDATE)
+	public MessageReturnDto<?> updateProfile( @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
+			User user = userService.findByEmail(userDetails.getUsername());
 
-            if (updateUserRequestDto.getFirstName() != null)
-                user.getUserInfo().setFirstName(updateUserRequestDto.getFirstName());
-            if (updateUserRequestDto.getLastName() != null)
-                user.getUserInfo().setLastName(updateUserRequestDto.getLastName());
-            if (updateUserRequestDto.getPhone() != null) user.getUserInfo().setPhone(updateUserRequestDto.getPhone());
-            if (updateUserRequestDto.getAddress() != null)
-                user.getUserInfo().setAddress(updateUserRequestDto.getAddress());
-            if (updateUserRequestDto.getAvatar() != null)
-                user.getUserInfo().setAvatar(updateUserRequestDto.getAvatar());
-            if (updateUserRequestDto.getCoverImage() != null)
-                user.getUserInfo().setCoverImage(updateUserRequestDto.getCoverImage());
-            if (updateUserRequestDto.getAbout() != null) user.getUserInfo().setAbout(updateUserRequestDto.getAbout());
-            if (updateUserRequestDto.getBio() != null) user.getUserInfo().setBio(updateUserRequestDto.getBio());
-            if (updateUserRequestDto.getSlug() != null) user.getUserInfo().setSlug(updateUserRequestDto.getSlug());
-            if (updateUserRequestDto.getBirthday() != null)
-                user.getUserInfo().setBirthday(updateUserRequestDto.getBirthday());
-            if (updateUserRequestDto.getGender() != (-1))
-                user.getUserInfo().setGender(updateUserRequestDto.getGender() != 0);
+			if (updateUserRequestDto.getFirstName() != null)
+				user.getUserInfo().setFirstName(updateUserRequestDto.getFirstName());
+			if (updateUserRequestDto.getLastName() != null)
+				user.getUserInfo().setLastName(updateUserRequestDto.getLastName());
+			if (updateUserRequestDto.getPhone() != null) user.getUserInfo().setPhone(updateUserRequestDto.getPhone());
+			if (updateUserRequestDto.getAddress() != null)
+				user.getUserInfo().setAddress(updateUserRequestDto.getAddress());
+			if (updateUserRequestDto.getAvatar() != null)
+				user.getUserInfo().setAvatar(updateUserRequestDto.getAvatar());
+			if (updateUserRequestDto.getCoverImage() != null)
+				user.getUserInfo().setCoverImage(updateUserRequestDto.getCoverImage());
+			if (updateUserRequestDto.getAbout() != null) user.getUserInfo().setAbout(updateUserRequestDto.getAbout());
+			if (updateUserRequestDto.getBio() != null) user.getUserInfo().setBio(updateUserRequestDto.getBio());
+			if (updateUserRequestDto.getSlug() != null) user.getUserInfo().setSlug(updateUserRequestDto.getSlug());
+			if (updateUserRequestDto.getBirthday() != null)
+				user.getUserInfo().setBirthday(updateUserRequestDto.getBirthday());
+			if (updateUserRequestDto.getGender() != ( - 1 ))
+				user.getUserInfo().setGender(updateUserRequestDto.getGender() != 0);
 
-            this.userService.save(user);
+			this.userService.save(user);
 
-            UserHaftDto userHaftDto = modelMapper.map(user, UserHaftDto.class);
+			UserHaftDto userHaftDto = modelMapper.map(user , UserHaftDto.class);
 
-            return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userHaftDto).build()).getBody();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userHaftDto).build()).getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
 
-    }
+	}
 
-    @PostMapping(UTILS_ADD_FRIEND)
-    public MessageReturnDto<?> addFriend(@Valid @RequestBody AddFriendRequestDto addFriendRequestDto, @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+	@PostMapping(UTILS_ADD_FRIEND)
+	public MessageReturnDto<?> addFriend( @Valid @RequestBody AddFriendRequestDto addFriendRequestDto , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            User user = userService.findByEmail(userDetails.getUsername());
+			User user = userService.findByEmail(userDetails.getUsername());
 
-            User friend = userService.findByEmail(addFriendRequestDto.getEmail());
+			User friend = userService.findByEmail(addFriendRequestDto.getEmail());
 
-            Friend f = Friend.builder().user(friend).build();
+			Set<User> friends = new HashSet<>();
+			friends.add(friend);
 
-            user.getFriends().add(f);
+			Friend fu = Friend.builder().users(friends).status(FriendStatus.PENDING).build();
 
-            userService.save(user);
+			user.getFriends().add(fu);
 
-            Notification notification = Notification.builder().owner(user).userRef(friend).type(NotificationType.ADD_FRIEND).build();
+			userService.save(user);
 
-            notificationService.save(notification);
+			Notification notification = Notification.builder().owner(user).userRef(friend).type(NotificationType.ADD_FRIEND).build();
 
-            return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
+			notificationService.save(notification);
 
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
-    }
+			UserHaftDto userHaftDto = modelMapper.map(user , UserHaftDto.class);
 
-    @PutMapping(UTILS_CHANGE_STATUS_FRIEND)
-    public MessageReturnDto changeStatusFriend(@Valid @RequestBody ChangeFriendStatusDto changeFriendStatusDto, @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userHaftDto).build()).getBody();
 
-            User user = userService.findByEmail(userDetails.getUsername());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
 
-            User friend = userService.findByEmail(changeFriendStatusDto.getEmailTarget());
+	@PutMapping(UTILS_CHANGE_STATUS_FRIEND)
+	public MessageReturnDto changeStatusFriend( @Valid @RequestBody ChangeFriendStatusDto changeFriendStatusDto , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            this.userService.processFriendStatus(user, friend, changeFriendStatusDto.getStatus());
+			User user = userService.findByEmail(userDetails.getUsername());
 
-            Notification notification = Notification.builder().owner(user).userRef(friend).type(NotificationType.ADD_FRIEND).build();
+			User friend = userService.findByEmail(changeFriendStatusDto.getEmailTarget());
 
-            notificationService.save(notification);
+			this.userService.processFriendStatus(user , friend , changeFriendStatusDto.getStatus());
 
-            return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
+			Notification notification = Notification.builder().owner(user).userRef(friend).type(NotificationType.ADD_FRIEND).build();
 
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
-    }
+			notificationService.save(notification);
 
-    @GetMapping(GET_IMAGE_OF_USER)
-    public MessageReturnDto getImagesUser(@Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
 
-            User user = userService.findByEmail(userDetails.getUsername());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
 
-            List<String> images = user.getPosts().stream().map(Post::getThumbnail).toList();
+	@GetMapping(GET_IMAGE_OF_USER)
+	public MessageReturnDto getImagesUser( @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<List<String>>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(images).build()).getBody();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
-    }
+			User user = userService.findByEmail(userDetails.getUsername());
 
-    @PutMapping(LOCK_ACCOUNT)
-    public MessageReturnDto lockAccount(@Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails) {
-        try {
+			List<String> images = user.getPosts().stream().map(Post::getThumbnail).toList();
 
-            User user = userService.findByEmail(userDetails.getUsername());
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<List<String>>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(images).build()).getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
 
-            this.userService.delete(user);
+	@PutMapping(LOCK_ACCOUNT)
+	public MessageReturnDto lockAccount( @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
 
-            return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
-        }
-    }
+			User user = userService.findByEmail(userDetails.getUsername());
+
+			this.userService.delete(user);
+
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
+
+	@GetMapping("find-by-name")
+	public MessageReturnDto findUserByName( @RequestParam(name = "name", defaultValue = "") String name , @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails ) {
+		try {
+			List<User> users = this.userService.getUsersByLastName(name);
+
+			List<UserHaftDto> usersHaftDtos = users.stream().map(user -> modelMapper.map(user , UserHaftDto.class)).toList();
+
+			return ResponseEntity.status(HTTP_OK).body(MessageReturnDto.<List<UserHaftDto>>builder().data(usersHaftDtos).status(HTTP_OK).message(HTTP_OK_MESSAGE).build()).getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
+		}
+	}
 
 }

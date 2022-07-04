@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 import InputSearch from "./InputSearch";
 import NavigateItem from "./NavigateItem";
 import {NAVIGATE_LIST} from "../../../constants";
-import {useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import HeaderRight from "./HeaderRight";
 
 interface IProps {
@@ -25,7 +25,9 @@ const Header: React.FC<IProps> = () => {
     return <Box className={styles.root}>
         <Box className={styles.headerLeft}>
             <Box className={styles.logo}>
-                <img src="/images/logo.svg" alt=""/>
+                <Link to={`/`}>
+                    <img src="/images/logo.svg" alt=""/>
+                </Link>
             </Box>
             <Box>
                 <InputSearch/>

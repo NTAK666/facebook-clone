@@ -23,6 +23,8 @@ public class API {
 
 	public static final String API_ENDPOINTS_STORIES = API_PREFIX_V1 + "/stories";
 
+	public static final String API_ENDPOINTS_FRIENDS = API_PREFIX_V1 + "/friends";
+
 	public static final String FRIENDS = "/friends";
 
 	public static final String ALL = "/all";

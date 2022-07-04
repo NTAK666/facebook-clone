@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import work.nguyentruonganhkiet.api.model.entities.Post;
+import work.nguyentruonganhkiet.api.model.entities.User;
 import work.nguyentruonganhkiet.api.model.sub.CommentPost;
 import work.nguyentruonganhkiet.api.model.sub.ReactPost;
 import work.nguyentruonganhkiet.api.repositories.PostRepository;
@@ -85,4 +86,8 @@ public class PostService implements IBaseService<Post, Long> {
     public long count() {
         return this.postRepository.count();
     }
+
+//    public List<Post> findAllPostsOfFriends( User user , Pageable pageable ) {
+//        return this.postRepository.findAllPostsOfFriends(user, pageable).stream().map(post -> post.isDelete() ? null : post).collect(Collectors.toList());
+//    }
 }

@@ -80,6 +80,7 @@ public class AuthController {
 
             return ResponseEntity.ok(MessageReturnDto.<JwtDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(JwtDto.builder().expiresIn(8640000).token(jwt).build()).build()).getBody();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
         }
     }
@@ -105,6 +106,7 @@ public class AuthController {
 
             return ResponseEntity.ok(MessageReturnDto.getOkReturn()).getBody();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
         }
     }
@@ -118,6 +120,7 @@ public class AuthController {
 
             return ResponseEntity.ok(MessageReturnDto.<UserHaftDto>builder().status(HTTP_OK).message(HTTP_OK_MESSAGE).data(userDto).build()).getBody();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
         }
     }

@@ -1,24 +1,26 @@
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import React from 'react';
-import {useAppSelector} from "../../app/hook";
-import {useGetPostsByFriendQuery} from "../../app/services/PostService";
+import { useAppSelector } from "../../app/hook";
+import { useGetPostsByFriendQuery } from "../../app/services/PostService";
 import CreatePost from "../../components/CreatePost";
 import ListPost from "../../components/Post/ListPost";
 import PostNormal from "../../components/Post/PostNormal";
 import PostSkeleton from '../../components/Skeleton/PostSkeleton';
 import Story from "../../components/Story";
 import HomeLayout from "../../layouts/HomeLayout";
+import {useGetStoriesByMeQuery} from "../../app/services/StoryService";
 
 const HomePage: React.FC = () => {
-    const {isLoading} = useGetPostsByFriendQuery();
-    const {posts} = useAppSelector(state => state.postSlice)
+    const { isLoading } = useGetPostsByFriendQuery();
+    useGetStoriesByMeQuery();
+    const { posts } = useAppSelector(state => state.postSlice)
 
     const renderPosts = () => {
         if (isLoading) {
             return (
                 <>
-                    <PostSkeleton/>
-                    <PostSkeleton/>
+                    <PostSkeleton />
+                    <PostSkeleton />
                 </>
             )
         }
@@ -42,13 +44,13 @@ const HomePage: React.FC = () => {
 
     return (
         <HomeLayout>
-            <Box sx={{maxWidth: '680px', width: '680px'}}>
-                <Story/>
-                <CreatePost/>
+            <Box sx={{ maxWidth: '680px', width: '680px' }}>
+                <Story />
+                <CreatePost />
                 <ListPost>
                     {renderPosts()}
-                    <PostSkeleton/>
-                    <PostSkeleton/>
+                    <PostSkeleton />
+                    <PostSkeleton />
                 </ListPost>
             </Box>
         </HomeLayout>

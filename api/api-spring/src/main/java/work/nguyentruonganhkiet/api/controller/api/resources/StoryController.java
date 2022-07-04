@@ -16,9 +16,8 @@ import work.nguyentruonganhkiet.api.model.dtos.requests.ReactRequestDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.MessageReturnDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.entities.PostDto;
 import work.nguyentruonganhkiet.api.model.dtos.responses.entities.StoryDto;
-import work.nguyentruonganhkiet.api.model.entities.Notification;
-import work.nguyentruonganhkiet.api.model.entities.Story;
-import work.nguyentruonganhkiet.api.model.entities.User;
+import work.nguyentruonganhkiet.api.model.entities.*;
+import work.nguyentruonganhkiet.api.model.enums.FriendStatus;
 import work.nguyentruonganhkiet.api.model.sub.CommentStory;
 import work.nguyentruonganhkiet.api.model.sub.ReactStory;
 import work.nguyentruonganhkiet.api.service.NotificationService;
@@ -61,13 +60,20 @@ public class StoryController {
 
 			User user = userService.findByEmail(userDetails.getUsername());
 
-			List<Story> stories = user.getFriends().stream().map(friend -> friend.getUser().getStories()).flatMap(Set::stream).filter(s -> ! s.isDelete()).toList();
+//			List<Story> stories = user.getFriends().stream().map(friend -> friend.getUser().getStories()).flatMap(Set::stream).filter(s -> ! s.isDelete()).toList();
+
+			List<Friend> friends = user.getFriends().stream().filter(f -> f.getStatus().equals(FriendStatus.ACCEPTED)).toList();
+
+			List<User> users = friends.stream().map(Friend::getUsers).flatMap(Set::stream).filter(Objects::nonNull).distinct().toList();
+
+			List<Story> stories = users.stream().map(User::getStories).flatMap(Set::stream).filter(Objects::nonNull).toList();
 
 			List<StoryDto> storyDtos = stories.stream().map(story -> modelMapper.map(story , StoryDto.class)).toList();
 
 			return ResponseEntity.ok(MessageReturnDto.<List<StoryDto>>builder().message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).data(storyDtos).build()).getBody();
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -93,6 +99,7 @@ public class StoryController {
 
 			return ResponseEntity.ok(MessageReturnDto.<List<StoryDto>>builder().data(storiesDtos).message(STATUS.HTTP_OK_MESSAGE).status(STATUS.HTTP_OK).paginate(pageable).build()).getBody();
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -110,6 +117,7 @@ public class StoryController {
 
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(storyDto).build()).getBody();
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -126,6 +134,8 @@ public class StoryController {
 
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(storyDto).build()).getBody();
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -152,6 +162,7 @@ public class StoryController {
 
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(storyDto).build()).getBody();
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -174,6 +185,7 @@ public class StoryController {
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(storyDto).build()).getBody();
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -186,7 +198,7 @@ public class StoryController {
 
 			Story s = this.storyService.findById(id);
 
-			ReactStory reactStory = ReactStory.builder().reactType(reactRequestDto.getReactType()).user(user).build();
+			ReactStory reactStory = ReactStory.builder().reactType(reactRequestDto.getReactType()).user(user).story(s).build();
 
 			Story sr = this.storyService.reactToStory(s , reactStory);
 
@@ -199,6 +211,7 @@ public class StoryController {
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(storyDto).build()).getBody();
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}
@@ -209,21 +222,22 @@ public class StoryController {
 
 			User user = userService.findByEmail(userDetails.getUsername());
 
-			Story p = this.storyService.findById(id);
+			Story s = this.storyService.findById(id);
 
-			CommentStory commentStory = CommentStory.builder().comment(comment.getComment()).user(user).build();
+			CommentStory commentStory = CommentStory.builder().comment(comment.getComment()).user(user).story(s).build();
 
-			Story pr = this.storyService.commentToStory(p , commentStory);
+			Story pr = this.storyService.commentToStory(s , commentStory);
 
-			Notification notification = Notification.builder().storyRef(p).commentRef(commentStory).build();
+			Notification notification = Notification.builder().storyRef(s).commentRef(commentStory).build();
 
-			this.notificationService.commentStoryNotification(p , p.getUser() , user , notification);
+			this.notificationService.commentStoryNotification(s , s.getUser() , user , notification);
 
 			StoryDto prdto = modelMapper.map(pr , StoryDto.class);
 
 			return ResponseEntity.ok(MessageReturnDto.<StoryDto>builder().status(STATUS.HTTP_OK).message(STATUS.HTTP_OK_MESSAGE).data(prdto).build()).getBody();
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return ResponseEntity.badRequest().body(MessageReturnDto.getExceptionReturn()).getBody();
 		}
 	}

@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 public class UserHaftDto implements Serializable {
-	private Long id;
-	private Timestamp createdAt;
-	private Timestamp updatedAt;
-	private String password;
-	private String email;
-	private UserInfoDto userInfo;
+    private Long id;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private String email;
+    private UserInfoDto userInfo;
 }

@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+
+  .wrapperContent {
+    flex-grow: 1;
+    margin-top: var(--header-height);
+    height: 100%;
+    margin-left: var(--navbar-width);
+  }
+}

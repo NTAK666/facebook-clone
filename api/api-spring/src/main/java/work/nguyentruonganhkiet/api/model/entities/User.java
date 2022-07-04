@@ -59,9 +59,9 @@ public class User extends BaseEntity {
 	@JsonManagedReference
 	private Set<Post> posts = new LinkedHashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JsonManagedReference
-	private Set<Friend> friends = new LinkedHashSet<>();
+//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//	@JsonManagedReference
+//	private Set<Friend> friends = new LinkedHashSet<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
@@ -70,5 +70,8 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Set<Notification> notifications = new LinkedHashSet<>();
+
+	@ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Friend> friends = new LinkedHashSet<>();
 
 }
