@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import styles from './story.module.scss';
-import {Box, IconButton, Grid} from "@mui/material";
+import {Box, Grid, IconButton} from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CreateStory from './CreateStoryButton';
 import StoryItem from '../Story/StoryItem';

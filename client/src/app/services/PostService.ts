@@ -1,6 +1,8 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {IPostCreate, IPostFull} from "../models/Post";
 import {Response} from "../models/Response";
+import {ICommentCreate} from "../models/Comment";
+import {IReactCreate, IReactFull} from "../models/React";
 
 const BASE_URL = process.env.REACT_APP_URL_API || "";
 
@@ -23,19 +25,40 @@ export const postService = createApi({
                 body: data,
             }),
         }),
+        getPostsByMe: build.query<Response<IPostFull[]>, void>({
+            query: () => `/all`,
+        }),
         getPostsByFriend: build.query<Response<IPostFull[]>, void>({
             query: () => ({
                 url: "/friends?page=0&size=10",
                 method: "GET",
             }),
         }),
-        getPostsByMe: build.query<Response<IPostFull[]>, void>({
-            query: () => ({
-                url: "/all",
-                method: "GET",
-            }),
+        sendCommentByPost: build.mutation<Response<IPostFull>, ICommentCreate>({
+            query: (data) => ({
+                url: `/comment/${data.postId}`,
+                method: "POST",
+                body: {
+                    comment: data.comment,
+                },
+            })
+        }),
+        reactByPost: build.mutation<Response<IReactFull>, IReactCreate>({
+            query: (data) => ({
+                url: `/react/${data.postId}`,
+                method: "POST",
+                body: {
+                    reactType: data.reactType,
+                }
+            })
         })
     }),
 });
 
-export const {useCreatePostMutation, useGetPostsByFriendQuery, useGetPostsByMeQuery} = postService;
+export const {
+    useCreatePostMutation,
+    useGetPostsByFriendQuery,
+    useGetPostsByMeQuery,
+    useSendCommentByPostMutation,
+    useReactByPostMutation
+} = postService;

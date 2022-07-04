@@ -1,4 +1,5 @@
 import {IUserFull} from "./User";
+import {ICommentFull} from "./Comment";
 
 export interface IPostFull {
     id: number
@@ -13,7 +14,7 @@ export interface IPostFull {
     cover: any
     user: IUserFull
     reactPosts: any[]
-    commentPosts: any[]
+    commentPosts: ICommentFull[]
     delete: boolean
 }
 

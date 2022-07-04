@@ -1,0 +1,19 @@
+.navbar {
+  position: fixed;
+  top: var(--header-height);
+  background: white;
+  width: var(--navbar-width);
+  height: 95%;
+  padding: 20px 10px;
+  left: 0;
+  box-shadow: 8.5px 8.5px 23px rgba(0, 0, 0, 0.018),
+  100px 100px 184px rgba(0, 0, 0, 0.06);
+  overflow: auto;
+}
+
+.wrapperContent {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}

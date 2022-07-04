@@ -1,38 +1,73 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles.module.scss'
 import {Box, IconButton, InputBase} from "@mui/material";
 import styled from "@emotion/styled";
 import AvatarOnline from "../../Avatar/AvatarOnline";
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
+import {useAppSelector} from "../../../app/hook";
+import {useSendCommentByPostMutation} from "../../../app/services/PostService";
+import {ICommentFull} from "../../../app/models/Comment";
 import CommentItem from "./CommentItem";
+import moment from "moment";
+import {IPostFull} from "../../../app/models/Post";
 
 interface IProps {
-    postId: string;
+    post: IPostFull;
 }
 
-const Comment: React.FC<IProps> = ({postId}) => {
+const Comment: React.FC<IProps> = ({post}) => {
+    const {user} = useAppSelector(state => state.authSlice);
+    const [comment, setComment] = useState<string>('');
+    const [sendCommentApi] = useSendCommentByPostMutation();
+    const [commentList, setCommentList] = useState<ICommentFull[]>([])
+
+    useEffect(() => {
+        setCommentList(post.commentPosts)
+    }, [post.commentPosts])
+
+    const handleSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        const request = {
+            postId: post.id,
+            comment
+        }
+        sendCommentApi(request).then((response: any) => {
+            if (response.data.status === 200) {
+                const data = response.data.data;
+                setCommentList([...commentList, data])
+            }
+
+        })
+        setComment("");
+    }
+
     return (
         <>
             <Box className={styles.root}>
-                <Box className={styles.header}>
-                    <AvatarOnline src={'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=ncwh4TJZAIsAX-Cacjz&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fsgn2-6.fna&oh=00_AT_g62KgrbOtHjyq0Gjec24biU7pP9XgHAV7eolVmGMbQw&oe=62B4687F'} online={true}/>
-                    <InputStyled placeholder={'Viết bình luận'} />
+                <form onSubmit={handleSubmit} className={styles.header}>
+                    <AvatarOnline src={user.userInfo.avatar || ""} online={true}/>
+                    <InputStyled value={comment} onChange={(e) => setComment(e.target.value)}
+                                 placeholder={'Viết bình luận'}/>
+                    <button type={`submit`} hidden></button>
                     <Box className={styles.headerActions}>
                         <IconButton>
-                            <CameraAltOutlinedIcon />
+                            <CameraAltOutlinedIcon/>
                         </IconButton>
                     </Box>
-                </Box>
+                </form>
                 <Box>
-                    <CommentItem
-                        time={'1 giờ trước'}
-                        commentId={`comment-${1}`}
-                        image={'https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8MmslMjB3YWxscGFwZXJ8ZW58MHx8MHx8&w=1000&q=80'}
-                        title={'Nguyễn Trương Anh Kiệt'} content={'Đăng ôn thi cho zui mà mấy bé vào an ủi cùng nhau vượt qua nào Đăng ôn thi cho zui mà mấy bé vào an ủi cùng nhau vượt qua nào '} src={'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=ncwh4TJZAIsAX-Cacjz&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fsgn2-6.fna&oh=00_AT_g62KgrbOtHjyq0Gjec24biU7pP9XgHAV7eolVmGMbQw&oe=62B4687F'}/>
-                    <CommentItem
-                        time={'1 giờ trước'}
-                        commentId={`comment-${2}`}
-                        title={'Nguyễn Trương Anh Kiệt'} content={'Đăng ôn thi cho zui mà mấy bé vào an ủi cùng nhau vượt qua nào Đăng ôn thi cho zui mà mấy bé vào an ủi cùng nhau vượt qua nào '} src={'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p100x100&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=ncwh4TJZAIsAX-Cacjz&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.fsgn2-6.fna&oh=00_AT_g62KgrbOtHjyq0Gjec24biU7pP9XgHAV7eolVmGMbQw&oe=62B4687F'}/>
+                    {commentList.slice().reverse().map((comment: ICommentFull) => {
+                        return (
+                            <CommentItem
+                                key={comment.id}
+                                time={moment(comment.createdAt).fromNow()}
+                                commentId={comment.id}
+                                image={comment.image}
+                                title={`${comment.user.userInfo.firstName} ${comment.user.userInfo.lastName}`}
+                                content={comment.comment}
+                                src={comment.user.userInfo.avatar || ""}/>
+                        )
+                    })}
                 </Box>
             </Box>
         </>

@@ -1,39 +1,31 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import styles from './input.module.scss'
-import {InputBase} from "@mui/material";
+import {ButtonBase, InputBase} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import {useNavigate} from "react-router-dom";
 
-interface IProps {}
-
+interface IProps {
+}
 
 
 const InputSearch: React.FC<IProps> = () => {
-    const [isFocus, setIsFocus] = React.useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [keyword, setKeyword] = React.useState('');
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        document.addEventListener('click', (event) => {
-            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-                setIsFocus(false);
-            }
-        });
-
-    }, []);
-
-
-    const onFocusSearch = () => {
-        setIsFocus(true)
+    const handleSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        navigate(`/search?k=${keyword}`);
     }
 
-    return <form className={styles.root}>
-        <span className={isFocus ? styles.hidden : ''}>
+    return <form onSubmit={handleSubmit} className={styles.root}>
+        <ButtonBase type={`submit`}>
             <SearchIcon sx={{color: '#65676b'}}/>
-        </span>
+        </ButtonBase>
         <InputBase type="text"
-                   ref={inputRef}
-                   onFocus={onFocusSearch}
                    className={styles.inputSearch}
                    placeholder="Tìm kiếm trên Facebook"
+                   value={keyword}
+                   onChange={(e) => setKeyword(e.target.value)}
         />
     </form>
 }

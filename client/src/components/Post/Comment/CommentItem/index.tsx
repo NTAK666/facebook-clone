@@ -9,7 +9,7 @@ interface IProps {
     title: string;
     content?: string;
     image?: string;
-    commentId: string;
+    commentId: number;
     time?: string;
 }
 
@@ -49,7 +49,7 @@ const CommentItem: React.FC<IProps> = ({time, commentId, src, title, content, im
                                 overflow: `hidden`,
                                 padding: 0,
                             }}>
-                                <img data-fancybox={commentId} onLoad={onLoadImage}
+                                <img data-fancybox={`${commentId}`} onLoad={onLoadImage}
                                      style={{
                                          width: `100%`,
                                          height: `100%`,
