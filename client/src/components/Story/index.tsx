@@ -16,7 +16,7 @@ const Story = () => {
                 }}/>
                 <StoryItem story={{image: 'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg'}} user={{
                     name: 'Nguyễn Trương Anh Kiệt',
-                    avatar: 'https://scontent.fdad3-3.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p200x200&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=EmMFLpa1TBIAX84NP44&_nc_oc=AQkz4RSGEVUmmX-wTAro4_GN5V_dMOIgHt94w9g_ZtnFjbAvJW4JgDe7N2N7vrfv7VQCjSXuMmLDzKwvBYDo0zoG&_nc_ht=scontent.fdad3-3.fna&oh=00_AT-1JIvW47tKYzbMoaUCWQ_ndl7e9py0ZoC23N8GJWOm_g&oe=62B85CFF'
+                    avatar: 'https://scontent.fdad3-3.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p200x200&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=kFEzNDpbprYAX-yaZB-&_nc_oc=AQlQe19MGY_RLczqEX9roK97MZonEdUPmLtOsWNIz8vbno1n0dl0eOz3bRqwdWVWnT0EVx_VkdSE-Ln5IIr9JKlv&_nc_ht=scontent.fdad3-3.fna&oh=00_AT_0wt_UrLxiPFLRrN6zODvp8587LU4EGaoefhCK0iAcyw&oe=62C43A7F'
                 }}/>
                 <StoryItem
                     story={{image: 'https://image-us.24h.com.vn/upload/4-2021/images/2021-12-23/anh-1-1640243906-582-width650height741.jpg'}}

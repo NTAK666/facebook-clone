@@ -1,0 +1,53 @@
+.listPhoto {
+  padding: 10px;
+  margin-top: 20px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  height: 100%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  .photoItem {
+    width: 100%;
+
+    .photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      margin-right: 16px;
+    }
+
+  }
+
+  .moreButton {
+    padding: 5px 16px 5px 16px;
+    background-color: #F0F2F5;
+    color: black;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: #D8DADF;
+    }
+  ;
+    float: right;
+  }
+
+  .editButton {
+    margin-top: 10px;
+    width: 100%;
+    padding: 6px 10px 6px 10px;
+    border-radius: 5px;
+    text-align: center;
+    text-transform: none;
+    background-color: #E4E6EB;
+
+    &:hover {
+      background-color: #D8DADF;
+    }
+  }
+
+}
+
+
+
+

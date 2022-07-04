@@ -44,7 +44,7 @@ const Profile = () => {
                                 </Box>
                             </Grid>
                             <Grid item xs={7}>
-                                {/*<ProfilePost/>*/}
+                                <ProfilePost/>
                             </Grid>
                         </Grid>
                     </Container>

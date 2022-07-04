@@ -14,6 +14,9 @@ import {useGetMeQuery} from "./app/services/AuthService";
 import LoadingCircle from "./components/Loading/LoadingCircle";
 import PrivateRoute from "./components/Router/PrivateRoute";
 import NotFound from "./components/NotFound/404";
+import AboutProfile from "./pages/Profile/AboutProfile";
+import FriendProfile from "./pages/Profile/FriendProfile";
+import PhotoProfile from "./pages/Profile/PhotoProfile";
 
 function App() {
     const {isLoading} = useGetMeQuery();
@@ -36,8 +39,11 @@ function App() {
                     <Route index element={<StoriesPage/>}/>
                     <Route path="create" element={<CreateStories/>}/>
                 </Route>
-                <Route path="/profile" element={<Profile/>}/>
             </Route>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/about" element={<AboutProfile/>}/>
+            <Route path="/friends" element={<FriendProfile/>}/>
+            <Route path="/photos" element={<PhotoProfile/>}/>
             <Route path="test" element={<Test/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
