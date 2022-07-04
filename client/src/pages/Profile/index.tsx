@@ -9,7 +9,7 @@ import ProfileFriend from "../../components/Profile/ProfileFriend";
 import styled from "@emotion/styled";
 
 
-const Profile = () => {
+const ProfilePage = () => {
     return (
         <ProfileLayout>
             <Box>
@@ -62,4 +62,4 @@ const Text = styled(Box)`
 `
 
 
-export default Profile;
+export default ProfilePage;

@@ -34,7 +34,10 @@ const storySlice = createSlice({
         builder.addMatcher(
             storyService.endpoints.getStoriesByMe.matchFulfilled,
             (state: IState, {payload}: PayloadAction<Response<IStoryFull[]>>) => {
-                state.storiesMe = payload.data;
+                if(payload.data){
+                    state.storiesMe = payload.data;
+
+                }
             }
         );
     },
