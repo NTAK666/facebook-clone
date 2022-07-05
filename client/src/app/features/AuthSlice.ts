@@ -8,7 +8,7 @@ interface IState {
     isLoggedIn: boolean;
 }
 
-const USER_DEFAULT = {
+export const USER_DEFAULT = {
     id: 0,
     email: "",
     userInfo: {

@@ -114,7 +114,7 @@ const SearchPage: React.FC<IProps> = () => {
                                         </ListItemIcon>
                                         <ListItemText
                                             primary={
-                                                <Link to={`/`} className={`text-decoration-none`}>
+                                                <Link to={`/profile/${user.userInfo.slug}-${user.id}`} className={`text-decoration-none`}>
                                                     <Typography fontWeight={`bold`} sx={{color: "#333"}}>
                                                         {`${user.userInfo.firstName} ${user.userInfo.lastName}`}
                                                     </Typography>

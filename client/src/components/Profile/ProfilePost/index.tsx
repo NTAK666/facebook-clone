@@ -24,16 +24,12 @@ const ProfilePost = () => {
         }
 
         if (posts.length > 0) {
-            return posts.map((post, index) => {
+
+            return posts.slice(0).reverse().map((post, index) => {
                 return (
                     <PostNormal
                         key={index}
-                        postId={post.id}
-                        likeNumber={post.reactPosts.length}
-                        time={'1 giờ trước'}
-                        username={`${post.user.userInfo.firstName} ${post.user.userInfo.lastName}`}
-                        content={post.body}
-                        image={post.thumbnail}
+                        post={post}
                     />
                 )
             })

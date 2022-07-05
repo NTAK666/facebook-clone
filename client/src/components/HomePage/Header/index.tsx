@@ -12,7 +12,6 @@ interface IProps {
 
 const Header: React.FC<IProps> = () => {
     const {pathname} = useLocation();
-
     const renderNavigate = useMemo(() => {
         return NAVIGATE_LIST.map((item, index) => {
             const {Icon} = item;

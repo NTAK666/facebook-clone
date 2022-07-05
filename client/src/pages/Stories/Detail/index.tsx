@@ -33,7 +33,6 @@ const StoryDetail: React.FC<IProps> = () => {
             const storySplit = id.split('-');
             const storyId = storySplit[storySplit.length - 1]
             getStoryByIdApi(storyId);
-
         }
     }, [getStoryByIdApi, id]);
 

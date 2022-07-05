@@ -14,14 +14,28 @@ export const userService = createApi({
             return headers;
         },
     }),
+    tagTypes: ["UpdateImage"],
     endpoints: (build) => ({
         findByName: build.mutation<Response<IUserFull[]>, string>({
             query: (name) => ({
                 url: `/find-by-name?name=${name}`,
                 method: "GET",
             })
-        })
+        }),
+        getUserById: build.mutation<Response<IUserFull>, string>({
+            query: (id) => ({
+                url: `/get/${id}`,
+                method: "GET",
+            })
+        }),
+        getImageOfUser: build.query<Response<string[]>, void>({
+            query: () => ({
+                url: `/get-image-of-user`,
+                method: "GET",
+            }),
+            providesTags: ["UpdateImage"],
+        }),
     }),
 });
 
-export const {useFindByNameMutation} = userService;
+export const {useFindByNameMutation, useGetUserByIdMutation, useGetImageOfUserQuery} = userService;

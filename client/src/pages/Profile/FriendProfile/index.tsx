@@ -5,10 +5,11 @@ import ProfileLayout from "../../../layouts/ProfileLayout";
 import FriendList from "../../../components/Profile/About/FriendList";
 
 const FriendProfile = () => {
+
     return (
         <ProfileLayout>
             <Box>
-                <ProfileInformation/>
+
                 <Box>
                     <Container>
                         <FriendList/>

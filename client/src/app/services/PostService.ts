@@ -16,7 +16,7 @@ export const postService = createApi({
             return headers;
         },
     }),
-    tagTypes: ["IPostFull", "IPostCreate"],
+    tagTypes: ["IPostFull", "IPostCreate", "UpdateImage"],
     endpoints: (build) => ({
         createPost: build.mutation<Response<IPostFull>, IPostCreate>({
             query: (data) => ({
@@ -24,6 +24,7 @@ export const postService = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["UpdateImage"],
         }),
         getPostsByMe: build.query<Response<IPostFull[]>, void>({
             query: () => `/all`,

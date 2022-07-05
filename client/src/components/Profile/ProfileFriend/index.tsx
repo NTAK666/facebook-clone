@@ -5,7 +5,7 @@ import FriendItem from "./FriendItem";
 
 const itemData = [
     {
-        img: 'https://scontent.fdad3-3.fna.fbcdn.net/v/t39.30808-1/286412953_7777480448958529_2260869162989296128_n.jpg?stp=dst-jpg_p200x200&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=qL4dJgXHIg8AX9YWhNR&_nc_oc=AQmgnxXJVX7aURdb7nrKT3tBEGf5jpvtCfDrdmavqvYV4lxdg4r7yoXdh37MhrUzVMCszgGx6ZySzHbHYiHaxKhg&_nc_ht=scontent.fdad3-3.fna&oh=00_AT-ULoLA-1eC11fsvmMIENbpm6VGuOzm6I57kxhk9UY8yw&oe=62C2403F',
+        img: 'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
         name: 'Anh Kiệt',
     },
     {
@@ -21,11 +21,11 @@ const itemData = [
         name: 'Phương Nam',
     },
     {
-        img: 'https://scontent.fdad3-3.fna.fbcdn.net/v/t39.30808-1/277750282_1016833975883535_6920911483236738831_n.jpg?stp=c25.0.148.148a_dst-jpg_p148x148&_nc_cat=111&ccb=1-7&_nc_sid=aa3c98&_nc_ohc=1mrBLyBHVPAAX8YRF1-&_nc_ht=scontent.fdad3-3.fna&oh=00_AT91eoJZz7hfvJw78kM000lqICFm450YiXUWRNicvmSBvA&oe=62C1489C',
+        img: 'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
         name: 'Thu Phượng',
     },
     {
-        img: 'https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-1/287962156_388852756545014_3049098154776382403_n.jpg?stp=dst-jpg_p200x200&_nc_cat=105&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Lhm2CoWXlJ4AX8_nM2c&_nc_oc=AQkGCE7XvyXzDzQ3lfsevGOpGKhaSbVsrP-uA539szzzxNaKuENO0wln7PkaACQlgUMpb0mk9eq_qwq724gL3fOD&_nc_ht=scontent.fdad3-4.fna&oh=00_AT9DhsMNlsxWhQFAKL5zt8gZSL2TXe6d84fY1-VcRMq-KA&oe=62C26EA1',
+        img: 'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
         name: 'Thu Hằng',
     },
     {
@@ -33,11 +33,11 @@ const itemData = [
         name: 'Huyền Châu',
     },
     {
-        img: 'https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-1/173565612_3060421320854974_6181620190984153350_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=7206a8&_nc_ohc=IVl1gzSK0poAX9KKwoE&_nc_ht=scontent.fdad3-4.fna&oh=00_AT__Tlm3RfmXJYu2rUi60W5r3p4U-pBlg5Ae8Zi-Oa-eZw&oe=62C23916',
+        img: 'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
         name: 'Bảo Nhi',
     },
     {
-        img: 'https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-1/285335551_1390402524776369_8514254912415132355_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=7206a8&_nc_ohc=8enMFXFxib4AX82gXnb&tn=Joey6Z_kHP1hkw34&_nc_ht=scontent.fdad3-4.fna&oh=00_AT_ErEl4GbSLnawIkSPsK8SFqaY_IpxfkVHyOIeAqiKbBA&oe=62C1B9D3',
+        img: 'https://scr.vn/wp-content/uploads/2020/07/Avatar-Facebook-tr%E1%BA%AFng.jpg',
         name: 'Minh Thư',
     }
 ]
@@ -68,8 +68,8 @@ const ProfileFriend = () => {
             </Typography>
             <Box className={styles.listFriend}>
                 <Grid container spacing={1}>
-                    {itemData.map((item) => (
-                        <FriendItem img={item.img} name={item.name}/>
+                    {itemData.map((item, index) => (
+                        <FriendItem img={item.img} name={item.name} key={index}/>
                     ))}
                 </Grid>
             </Box>

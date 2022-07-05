@@ -5,10 +5,11 @@ import ProfileLayout from "../../../layouts/ProfileLayout";
 import Photo from "../../../components/Profile/About/Photo";
 
 const PhotoProfile = () => {
+
     return (
         <ProfileLayout>
             <Box>
-                <ProfileInformation/>
+
                 <Box>
                     <Container>
                         <Photo/>
