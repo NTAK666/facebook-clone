@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from './styles.module.scss'
 import {Box} from "@mui/material";
-import HeaderRight from "../../components/HomePage/Header/HeaderRight";
 import {useLocation} from "react-router-dom";
 import NavbarList from "../../components/Stories/NavbarList";
 import Header from "../../components/HomePage/Header";

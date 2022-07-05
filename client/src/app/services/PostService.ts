@@ -52,6 +52,12 @@ export const postService = createApi({
                     reactType: data.reactType,
                 }
             })
+        }),
+        findPostById: build.mutation<Response<IPostFull>, string>({
+            query: (id) => ({
+                url: `/get/${id}`,
+                method: `GET`
+            })
         })
     }),
 });
@@ -61,5 +67,6 @@ export const {
     useGetPostsByFriendQuery,
     useGetPostsByMeQuery,
     useSendCommentByPostMutation,
-    useReactByPostMutation
+    useReactByPostMutation,
+    useFindPostByIdMutation
 } = postService;

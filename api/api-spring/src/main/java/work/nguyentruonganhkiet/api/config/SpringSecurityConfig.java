@@ -80,6 +80,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/swagger-ui.html/**").permitAll()
 				.antMatchers("/swagger-ui/**").permitAll()
 				.antMatchers("/images/**").permitAll()
+				.antMatchers("/ws/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter() , UsernamePasswordAuthenticationFilter.class);

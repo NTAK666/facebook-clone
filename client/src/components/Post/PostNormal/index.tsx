@@ -27,10 +27,10 @@ import {IPostFull} from "../../../app/models/Post";
 import moment from "moment";
 import ThumbUpRoundedIcon from '@mui/icons-material/ThumbUpRounded';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
-import {IUserFull} from "../../../app/models/User";
 import {IReactFull} from "../../../app/models/React";
 import {useAppSelector} from "../../../app/hook";
 import {useReactByPostMutation} from "../../../app/services/PostService";
+import {Link, useNavigate} from "react-router-dom";
 
 interface IProps {
     post: IPostFull;
@@ -38,6 +38,7 @@ interface IProps {
 
 const PostNormal: React.FC<IProps> = ({post}) => {
     const [ratio, setRatio] = React.useState<number>(3 / 4);
+    const navigate = useNavigate()
     const [reactPostApi] = useReactByPostMutation();
     const [colorImage, setColorImage] = useState(null);
     const [showMore, setShowMore] = useState(false);
@@ -130,7 +131,9 @@ const PostNormal: React.FC<IProps> = ({post}) => {
                         <Box className={styles.headerTitle}>
                             <Typography fontWeight={'bold'}
                                         sx={{fontSize: '15px'}}>{`${post.user.userInfo.firstName} ${post.user.userInfo.lastName}`}</Typography>
-                            <Typography sx={{fontSize: '13px'}}>{moment(post.createdAt).fromNow()}</Typography>
+                            <Link to={`/post/${post.slug}-${post.id}`} className={`hover-underline text-decoration-none text-color-gray`}>
+                                <Typography sx={{fontSize: '13px'}}>{moment(post.createdAt).fromNow()}</Typography>
+                            </Link>
                         </Box>
                     </Box>
 
@@ -155,11 +158,11 @@ const PostNormal: React.FC<IProps> = ({post}) => {
                                 horizontal: 'right',
                             }}
                         >
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem onClick={() => navigate(`/post/${post.slug}-${post.id}`)}>
                                 <ListItemIcon>
                                     <ReportGmailerrorredIcon/>
                                 </ListItemIcon>
-                                <Typography>Báo cáo bài viết</Typography>
+                                <Typography>Chi tiết bài viết</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>

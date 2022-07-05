@@ -47,6 +47,12 @@
   margin-bottom: 16px;
 }
 
+.hover-underline {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .space-t-16 {
   margin-top: 16px;
 }

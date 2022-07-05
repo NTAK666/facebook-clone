@@ -2,9 +2,27 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IPostFull} from "../models/Post";
 import {Response} from "../models/Response";
 import {postService} from "../services/PostService";
+import {USER_DEFAULT} from "./AuthSlice";
 
 interface IState {
     posts: IPostFull[];
+}
+
+export const POST_DEFAULT = {
+    id: 0,
+    createdAt: "",
+    updatedAt: "",
+    title: "",
+    slug: "",
+    thumbnail: "",
+    description: "",
+    body: "",
+    views: "",
+    cover: "",
+    user: USER_DEFAULT,
+    reactPosts: [],
+    commentPosts: [],
+    delete: false,
 }
 
 const initialState: IState = {
