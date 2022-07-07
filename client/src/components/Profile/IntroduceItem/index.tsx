@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './introduce-item.module.scss';
-import {Typography, Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 interface Props {
     content: string;

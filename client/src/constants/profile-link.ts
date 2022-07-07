@@ -1,7 +1,7 @@
 
 export const PROFILE_LINK = [
     {
-        to: '/profile',
+        to: '/',
         title: 'Bài viết',
     },
     {

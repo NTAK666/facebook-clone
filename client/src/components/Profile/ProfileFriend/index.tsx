@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Link, Button, Typography, Container, Grid, ImageListItem} from "@mui/material";
+import {Box, Button, Grid, Link, Typography} from "@mui/material";
 import styles from './profile-friend.module.scss';
 import FriendItem from "./FriendItem";
 

@@ -6,19 +6,23 @@
   .backgroundInformation {
     height: 460px;
     position: relative;
+
     .information {
       width: 100%;
-      .navigate{
+
+      .navigate {
         width: 100%;
         height: 100%;
       }
     }
-    .avatar{
+
+    .avatar {
       position: absolute;
       top: 95%;
       left: 20%;
       z-index: 3;
     }
+
     .icon {
       background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yt/r/AfFcYfy_hKV.png);
       background-position: 0px -193px;
@@ -85,11 +89,183 @@
     .moreButton {
       background-color: #F0F2F5;
       color: black;
+
       &:hover {
         background-color: #D8DADF;
       }
     ;
       float: right;
+    }
+  }
+}
+
+.modal {
+  width: 700px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+
+  .headerModal {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    justify-content: space-evenly;
+    position: relative;
+
+    .modalTitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      position: absolute;
+      align-self: center;
+    }
+
+    .closeButton {
+      margin-left: auto;
+      background-color: #efefef;
+    }
+  }
+
+  .avatarPreview {
+    width: 100%;
+
+    .wrapperImagePreview {
+      margin: 80px auto;
+      background-color: #FFFFFF;
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .footer {
+      flex-shrink: 1;
+      display: block;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+
+      .zoomImage {
+        width: 70%;
+        display: flex;
+        align-items: center;
+        margin: auto;
+      }
+
+      .buttonUpload {
+        background-color: #1B74E4;
+        color: white;
+        border-radius: 6px;
+        padding: 10px 15px;
+        display: flex;
+        gap: 5px;
+      }
+
+      .buttonRotate {
+        background-color: #d8dadf;
+        border-radius: 6px;
+        padding: 10px 15px;
+        display: flex;
+        gap: 5px;
+      }
+
+      .buttonSave {
+        background-color: #1B74E4;
+        color: white;
+        border-radius: 6px;
+        padding: 0 30px;
+        display: flex;
+        gap: 5px;
+      }
+    }
+  }
+}
+
+.modalCover {
+  width: 1200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+
+  .headerModalCover {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    justify-content: space-evenly;
+    position: relative;
+
+    .modalTitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      position: absolute;
+      align-self: center;
+    }
+
+    .closeButton {
+      margin-left: auto;
+      background-color: #efefef;
+    }
+  }
+
+  .coverPreview {
+    width: 100%;
+
+    .wrapperImagePreviewCover {
+      margin: 80px auto;
+      background-color: #FFFFFF;
+      width: 1000px;
+      height: 500px;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+
+  .footerCover {
+    width: 100%;
+
+    .zoomImageCover {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      margin: auto;
+    }
+    .buttonUploadCover {
+      background-color: #1B74E4;
+      color: white;
+      border-radius: 6px;
+      padding: 10px 15px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .buttonRotateCover {
+      background-color: #d8dadf;
+      border-radius: 6px;
+      padding: 10px 15px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .buttonSaveCover {
+      background-color: #1B74E4;
+      color: white;
+      border-radius: 6px;
+      padding: 0 30px;
+      display: flex;
+      gap: 5px;
     }
   }
 }

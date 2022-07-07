@@ -1,5 +1,5 @@
 import React from 'react';
-import {ButtonBase, Typography, Grid, Link} from "@mui/material";
+import {ButtonBase, Grid, Link, Typography} from "@mui/material";
 
 interface Props {
     img: string;

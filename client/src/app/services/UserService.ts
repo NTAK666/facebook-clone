@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {IUserFull} from "../models/User";
+import {IUserFull, IUserUpdate} from "../models/User";
 import {Response} from "../models/Response";
 
 const BASE_URL = process.env.REACT_APP_URL_API;
@@ -35,7 +35,14 @@ export const userService = createApi({
             }),
             providesTags: ["UpdateImage"],
         }),
+        updateUser: build.mutation<Response<IUserFull>, IUserUpdate>({
+            query: (data) => ({
+                url: `/settings/update`,
+                method: "PUT",
+                body: data,
+            }),
+        })
     }),
 });
 
-export const {useFindByNameMutation, useGetUserByIdMutation, useGetImageOfUserQuery} = userService;
+export const {useFindByNameMutation, useGetUserByIdMutation, useGetImageOfUserQuery, useUpdateUserMutation} = userService;

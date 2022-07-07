@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid, Typography, Container, IconButton, Button, ButtonBase} from "@mui/material";
+import {Box, Button, ButtonBase, Container, Grid, IconButton, Typography} from "@mui/material";
 import styles from './friend-list.module.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 

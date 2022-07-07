@@ -18,6 +18,9 @@ import SearchPage from "./pages/Search";
 import ProfilePage from "./pages/Profile";
 import PostDetail from "./pages/Posts/Detail";
 import SocketProvider from "./contexts/SocketContext";
+import AboutProfile from "./pages/Profile/AboutProfile";
+import FriendProfile from "./pages/Profile/FriendProfile";
+import PhotoProfile from "./pages/Profile/PhotoProfile";
 
 function App() {
     const {isLoading} = useGetMeQuery();
@@ -27,7 +30,7 @@ function App() {
     }
 
     return (
-        <SocketProvider>
+        // <SocketProvider>
             <Routes>
                 <Route path="login" element={<LoginPage/>}/>
                 <Route element={<PrivateRoute/>}>
@@ -46,15 +49,17 @@ function App() {
                         <Route path=":id" element={<StoryDetail/>}/>
                     </Route>
                     <Route path="search" element={<SearchPage/>}/>
+                    <Route path="profile">
+                        <Route path=":id" element={<ProfilePage/>}/>
+                        <Route path=":id/about" element={<AboutProfile/>}/>
+                        <Route path=":id/friends" element={<FriendProfile/>}/>
+                        <Route path=":id/photos" element={<PhotoProfile/>}/>
+                    </Route>
                 </Route>
-                <Route path="profile">
-                    <Route path=":id" element={<ProfilePage/>}/>
-                </Route>
-                <Route path="search" element={<SearchPage/>}/>
                 <Route path="test" element={<Test/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
-        </SocketProvider>
+        // </SocketProvider>
     );
 }
 

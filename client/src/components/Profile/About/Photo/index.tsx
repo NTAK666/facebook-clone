@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Typography, Grid, Container, ButtonBase, Button} from "@mui/material";
+import {Box, Button, ButtonBase, Container, Grid, Typography} from "@mui/material";
 import styles from "./list-photo.module.scss";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 

@@ -6,7 +6,6 @@ import ProfilePost from "../../components/Profile/ProfilePost";
 import ProfilePhoto from "../../components/Profile/ProfilePhoto";
 import ProfileFriend from "../../components/Profile/ProfileFriend";
 import styled from "@emotion/styled";
-import {useAppSelector} from "../../app/hook";
 
 
 const ProfilePage = () => {

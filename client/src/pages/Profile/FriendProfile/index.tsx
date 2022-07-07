@@ -1,6 +1,5 @@
 import React from 'react';
-import {Box, Container, Grid, Link} from "@mui/material";
-import ProfileInformation from "../../../components/Profile/ProfileInformation";
+import {Box, Container} from "@mui/material";
 import ProfileLayout from "../../../layouts/ProfileLayout";
 import FriendList from "../../../components/Profile/About/FriendList";
 

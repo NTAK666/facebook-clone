@@ -1,10 +1,9 @@
 import React from 'react';
-import {Box, Grid, Typography, Button, ButtonBase, IconButton} from "@mui/material";
+import {Box, Button, Grid, IconButton, Typography} from "@mui/material";
 import styles from './about.module.scss';
 import styled from "@emotion/styled";
 import FriendList from "./FriendList";
 import Photo from "./Photo";
-import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded';
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 interface props {

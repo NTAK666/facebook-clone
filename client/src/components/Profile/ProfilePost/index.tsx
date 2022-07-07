@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid} from "@mui/material";
+import {Box} from "@mui/material";
 import styles from "../ProfileIntroduce/profile-introduce.module.scss";
 import CreatePost from "../../CreatePost";
 import ListPost from "../../Post/ListPost";

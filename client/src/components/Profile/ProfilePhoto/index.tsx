@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styles from './profile-photo.module.scss';
-import {Box, Link, Button, Typography, ButtonBase, ImageList, ImageListItem} from "@mui/material";
+import {Box, Button, Link, Typography} from "@mui/material";
 import {useGetImageOfUserQuery} from "../../../app/services/UserService";
 
 

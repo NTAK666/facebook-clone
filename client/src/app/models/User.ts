@@ -18,6 +18,19 @@ export interface IUserInfo {
     gender: boolean
 }
 
+export interface IUserUpdate {
+    firstName?: string
+    lastName?: string
+    phone?:  string
+    address?:  string
+    avatar?: string
+    coverImage?: string
+    about?: string
+    bio?: string
+    birthday?: string
+    gender?: boolean
+}
+
 
 export interface IUserLogin {
     email: string;

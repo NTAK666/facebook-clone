@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import styles from './profile-introduce.module.scss';
-import {Box, Grid, Typography, Button, IconButton} from "@mui/material";
+import {Box, Button, Grid, IconButton, Typography} from "@mui/material";
 import IntroduceItem from "../IntroduceItem";
 import FeaturedStory from "../FeaturedStory";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import {IUserFull} from "../../../app/models/User";
 import {useAppSelector} from "../../../app/hook";
 
 interface props {
