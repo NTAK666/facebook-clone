@@ -7,7 +7,13 @@ const URL_SERVER = process.env.REACT_APP_URL_SERVER || 'http://localhost:1000';
 
 const Sock = new SockJS(`${URL_SERVER}/ws`);
 const stompClient = Stomp.over(Sock);
-
+stompClient.connect({
+    'authorization': `Bearer ${localStorage.getItem('auth')}`
+}, (data: Frame | undefined) => {
+    console.log('connected', data);
+}, (error: Frame | string) => {
+    console.log('error', error);
+});
 
 export const SocketContext = createContext(stompClient);
 
@@ -16,14 +22,16 @@ const SocketProvider = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (user) {
-            stompClient.connect({}, () => {
-                stompClient.send(`/app/connected`, {}, `${user.email}`);
-                stompClient.subscribe(`/channel/public`, (data: Frame | undefined) => {
-                    console.log(data)
-                }, (error: Frame | string) => {
-                    console.log(error)
-                });
+            stompClient.send(`/app/connected`, {}, `${user.email}`);
+            stompClient.subscribe(`/channel/public`, (data: Frame | undefined) => {
+                console.log(data)
+            }, (error: Frame | string) => {
+                console.log(error)
             });
+        }
+
+        return () => {
+            stompClient.unsubscribe(`/channel/public`);
         }
     }, [user]);
 

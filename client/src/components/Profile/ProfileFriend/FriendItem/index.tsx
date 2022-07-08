@@ -1,27 +1,26 @@
 import React from 'react';
-import { ButtonBase, Typography, Grid } from "@mui/material";
-import { IUserFull } from "../../../../app/models/User";
-import { Link } from 'react-router-dom'
+import {ButtonBase, Grid, Link, Typography} from "@mui/material";
 
 interface Props {
-    friend: IUserFull;
+    img: string;
+    name: string;
 }
 
-const FriendItem: React.FC<Props> = ({ friend }) => {
+const FriendItem: React.FC<Props> = ({img, name}) => {
     return (
         <Grid item xs={4}>
             <ButtonBase>
-                <img style={{ borderRadius: '5px' }}
-                    width="145px"
-                    height="145px"
-                    src={friend.userInfo.avatar || ""}
-                    alt="" />
+                <img style={{borderRadius: '5px'}}
+                     width="145px"
+                     height="145px"
+                     src={img}
+                     alt=""/>
 
             </ButtonBase>
-            <Link to={`/profile/${friend.userInfo.slug}-${friend.id}`} style={{ textDecoration: 'none' }}>
+            <Link href="/profile" sx={{textDecoration: 'none'}}>
                 <Typography
-                    sx={{ fontSize: '.75rem', fontWeight: '600', color: '#050505', whiteSpace: 'nowrap', overflow: 'hidden', marginTop: '5px' }}>
-                    {`${friend.userInfo.firstName} ${friend.userInfo.lastName}`}
+                    sx={{fontSize: '.75rem', fontWeight: '600', color: '#050505', whiteSpace: 'nowrap', overflow: 'hidden', marginTop: '5px'}}>
+                    {name}
                 </Typography>
             </Link>
         </Grid>

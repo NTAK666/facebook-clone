@@ -18,6 +18,7 @@ interface IProps {
 const HomeLayout: React.FC<IProps> = (props) => {
     const {isNavbarRight = true, isNavbarLeft = true, children} = props;
 
+
     const {chatbox} = useAppSelector(state => state.chatBoxSlice);
 
     const renderChatBox = () => {

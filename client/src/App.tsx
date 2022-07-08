@@ -18,16 +18,12 @@ import SearchPage from "./pages/Search";
 import ProfilePage from "./pages/Profile";
 import PostDetail from "./pages/Posts/Detail";
 import SocketProvider from "./contexts/SocketContext";
-import {useGetFriendHasSendQuery, useGetFriendRequestQuery, useGetFriendsQuery} from "./app/services/FriendService";
 import AboutProfile from "./pages/Profile/AboutProfile";
 import FriendProfile from "./pages/Profile/FriendProfile";
 import PhotoProfile from "./pages/Profile/PhotoProfile";
 
 function App() {
     const {isLoading} = useGetMeQuery();
-    useGetFriendsQuery();
-    useGetFriendRequestQuery();
-    useGetFriendHasSendQuery();
 
     if (isLoading) {
         return <LoadingCircle/>;
@@ -35,34 +31,34 @@ function App() {
 
     return (
         // <SocketProvider>
-        <Routes>
-            <Route path="login" element={<LoginPage/>}/>
-            <Route element={<PrivateRoute/>}>
-                <Route path="/" element={<HomePage/>}/>
-                <Route path="watch" element={<WatchPage/>}/>
-                <Route path="game" element={<GamePage/>}/>
-                <Route path="marketplace" element={<MarketplacePage/>}/>
-                <Route path="settings" element={<SettingPage/>}/>
-                <Route path="group" element={<GroupPage/>}/>
-                <Route path="post">
-                    <Route path=":slug" element={<PostDetail/>}/>
+            <Routes>
+                <Route path="login" element={<LoginPage/>}/>
+                <Route element={<PrivateRoute/>}>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="watch" element={<WatchPage/>}/>
+                    <Route path="game" element={<GamePage/>}/>
+                    <Route path="marketplace" element={<MarketplacePage/>}/>
+                    <Route path="settings" element={<SettingPage/>}/>
+                    <Route path="group" element={<GroupPage/>}/>
+                    <Route path="post">
+                        <Route path=":slug" element={<PostDetail/>}/>
+                    </Route>
+                    <Route path="stories">
+                        <Route index element={<StoriesPage/>}/>
+                        <Route path="create" element={<CreateStories/>}/>
+                        <Route path=":id" element={<StoryDetail/>}/>
+                    </Route>
+                    <Route path="search" element={<SearchPage/>}/>
+                    <Route path="profile">
+                        <Route path=":id" element={<ProfilePage/>}/>
+                        <Route path=":id/about" element={<AboutProfile/>}/>
+                        <Route path=":id/friends" element={<FriendProfile/>}/>
+                        <Route path=":id/photos" element={<PhotoProfile/>}/>
+                    </Route>
                 </Route>
-                <Route path="stories">
-                    <Route index element={<StoriesPage/>}/>
-                    <Route path="create" element={<CreateStories/>}/>
-                    <Route path=":id" element={<StoryDetail/>}/>
-                </Route>
-                <Route path="search" element={<SearchPage/>}/>
-                <Route path="profile">
-                    <Route path=":id" element={<ProfilePage/>}/>
-                    <Route path=":id/about" element={<AboutProfile/>}/>
-                    <Route path=":id/friends" element={<FriendProfile/>}/>
-                    <Route path=":id/photos" element={<PhotoProfile/>}/>
-                </Route>
-            </Route>
-            <Route path="test" element={<Test/>}/>
-            <Route path="*" element={<NotFound/>}/>
-        </Routes>
+                <Route path="test" element={<Test/>}/>
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
         // </SocketProvider>
     );
 }

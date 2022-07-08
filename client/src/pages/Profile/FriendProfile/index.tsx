@@ -8,6 +8,7 @@ const FriendProfile = () => {
     return (
         <ProfileLayout>
             <Box>
+
                 <Box>
                     <Container>
                         <FriendList/>

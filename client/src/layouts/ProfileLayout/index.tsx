@@ -16,8 +16,13 @@ interface IProps {
 
 const ProfileLayout: React.FC<IProps> = ({children}) => {
     const {id} = useParams();
+    const {user} = useAppSelector(state => state.authSlice);
     const [getUserByIdApi] = useGetUserByIdMutation();
-
+    useEffect(() => {
+        if (id) {
+            getUserByIdApi(id)
+        }
+    }, [id, getUserByIdApi, user]);
     useEffect(() => {
         if (id) {
             const userSplit = id.split('-');
@@ -25,7 +30,6 @@ const ProfileLayout: React.FC<IProps> = ({children}) => {
             getUserByIdApi(userId);
         }
     }, [getUserByIdApi, id]);
-
     const {chatbox} = useAppSelector(state => state.chatBoxSlice);
     const renderChatBox = () => {
         return chatbox.map((item: IChatBox, index) => {
@@ -39,7 +43,7 @@ const ProfileLayout: React.FC<IProps> = ({children}) => {
         <WrapperContentStyled>
             <ContentStyled>
                 <Box>
-                    <ProfileInformation/>
+                    <ProfileInformation />
                     {children}
                 </Box>
             </ContentStyled>

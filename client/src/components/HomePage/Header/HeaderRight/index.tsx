@@ -106,7 +106,7 @@ const HeaderRight: React.FC<IProps> = () => {
             </Menu>
             <IconButton onClick={(event) => openMenu(event, 'settings')}>
                 <AvatarCircle
-                    src={user.userInfo.avatar || ""}
+                    src={user.userInfo.avatar}
                     title={'Trang cá nhân của bạn'}/>
             </IconButton>
             <MultiMenu anchorEl={anchorEl['settings']} handleClose={handleClose}/>

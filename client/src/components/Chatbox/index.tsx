@@ -29,7 +29,6 @@ import {useAppDispatch} from "../../app/hook";
 import {closeChatBox, minimizeChatBox} from "../../app/features/ChatBoxSlice";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Picker from 'emoji-picker-react';
-import {useNavigate} from "react-router-dom";
 
 interface IProps {
     chatbox: IUserFull;
@@ -41,7 +40,6 @@ type Inputs = {
 }
 
 const Chatbox: React.FC<IProps> = ({chatbox, position}) => {
-    const navigate = useNavigate();
     const elementRef = useRef<HTMLElement>(null);
     const [elementActive, setElementActive] = useState(false)
     const emojiRef = useRef<HTMLElement>(null);
@@ -132,7 +130,7 @@ const Chatbox: React.FC<IProps> = ({chatbox, position}) => {
                     transformOrigin={{horizontal: 'right', vertical: 'top'}}
                     anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                 >
-                    <MenuItem onClick={() => navigate(`/profile/${chatbox.userInfo.slug}-${chatbox.id}`)}>
+                    <MenuItem>
                         <Avatar src={information.avatar}/> Xem trang cá nhân
                     </MenuItem>
                     <Divider/>
