@@ -1,7 +1,7 @@
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import React from 'react';
-import {useAppSelector} from "../../app/hook";
-import {useGetPostsByFriendQuery} from "../../app/services/PostService";
+import { useAppSelector } from "../../app/hook";
+import {useGetPostsByFriendQuery, useGetPostsByMeQuery} from "../../app/services/PostService";
 import CreatePost from "../../components/CreatePost";
 import ListPost from "../../components/Post/ListPost";
 import PostNormal from "../../components/Post/PostNormal";
@@ -13,6 +13,7 @@ import {useGetStoriesByMeQuery} from "../../app/services/StoryService";
 const HomePage: React.FC = () => {
     const { isLoading } = useGetPostsByFriendQuery();
     useGetStoriesByMeQuery();
+    useGetPostsByMeQuery();
     const { posts } = useAppSelector(state => state.postSlice)
 
     const renderPosts = () => {

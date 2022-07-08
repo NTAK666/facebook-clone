@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
     Avatar,
+    Modal,
     AvatarGroup,
     Box,
     Button,
@@ -9,15 +10,15 @@ import {
     IconButton,
     Menu,
     MenuItem,
-    Modal,
-    Slider,
-    Typography
+    Typography, Slider
 } from "@mui/material";
 import ButtonBase from '@mui/material/ButtonBase';
 import styles from './profile-information.module.scss';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import {PROFILE_LINK} from "../../../constants/profile-link";
 import {useLocation} from "react-router-dom";
@@ -25,25 +26,22 @@ import NavigateProfileItem from "../NavigateProfileItem";
 import {useAppSelector} from "../../../app/hook";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import {FRIEND_STATUS, PROFILE_IMAGE} from "../../../constants";
-import {IAcceptFriend, IFriendFull} from "../../../app/models/Friend";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import CropRotateIcon from "@mui/icons-material/CropRotate";
 import UploadIcon from '@mui/icons-material/Upload';
-import Cropper, {Area, Point} from "react-easy-crop";
+import Cropper, {Point, Area} from "react-easy-crop";
+import {PROFILE_IMAGE} from "../../../constants";
 import getCroppedImg from "../../../utils/CropImage";
-import {IUserFull, IUserUpdate} from "../../../app/models/User";
-import {useAcceptFriendMutation, useAddFriendMutation, useUpdateUserMutation} from "../../../app/services/UserService";
+import {IUserUpdate} from "../../../app/models/User";
+import {useUpdateUserMutation} from "../../../app/services/UserService";
 
 
 interface props {
 }
 
 const ProfileInformation: React.FC<props> = () => {
-    const [addFriendApi] = useAddFriendMutation();
-    const [acceptFriendApi] = useAcceptFriendMutation();
     const {pathname} = useLocation();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -78,6 +76,7 @@ const ProfileInformation: React.FC<props> = () => {
     }, [friends, userCurrent, friendRequest, requestHasSend]);
 
     const [userUpdateApi] = useUpdateUserMutation();
+
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
     const [avatarPreview, setAvatarPreview] = useState("");
@@ -88,6 +87,7 @@ const ProfileInformation: React.FC<props> = () => {
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
     const avaRef = useRef<any>(null);
     const coverRef = useRef<any>(null);
+
 
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
@@ -108,7 +108,6 @@ const ProfileInformation: React.FC<props> = () => {
             setSelf(true);
         }
     }, [userCurrent, user]);
-
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -225,100 +224,6 @@ const ProfileInformation: React.FC<props> = () => {
 
     }, [userUpdateApi, croppedAreaPixels, rotation, coverPreview])
 
-    const handleAddFriend = useCallback(() => {
-        addFriendApi(userCurrent.email).then((response: any) => {
-            if (response.data.status === 200) {
-                setFriendStatus(FRIEND_STATUS.REQUESTS);
-            }
-        })
-    }, [addFriendApi, userCurrent.email]);
-
-
-    const handleAcceptFriend = useCallback(() => {
-        const request: IAcceptFriend = {
-            emailTarget: userCurrent.email,
-            status: FRIEND_STATUS.ACCEPTED
-        }
-        acceptFriendApi(request).then((response: any) => {
-            if (response.data.status === 200) {
-                setFriendStatus(FRIEND_STATUS.ACCEPTED);
-            }
-        })
-    }, [acceptFriendApi, userCurrent.email]);
-
-
-    const renderButton = useMemo(() => {
-        let result = null;
-        switch (friendStatus) {
-            case FRIEND_STATUS.PENDING:
-                result = (
-                    <ButtonBase sx={{
-                        gap: '5px',
-                        backgroundColor: '#1B74E4',
-                        color: 'white',
-                        padding: '8px 12px 8px 12px',
-                        borderRadius: '6px'
-                    }}
-                                onClick={handleAcceptFriend}
-                    >
-                        <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                            Chấp nhận kết bạn
-                        </Typography>
-                    </ButtonBase>
-                );
-                break;
-            case FRIEND_STATUS.REQUESTS:
-                result = (
-                    <ButtonBase sx={{
-                        gap: '5px',
-                        backgroundColor: '#1B74E4',
-                        color: 'white',
-                        padding: '8px 12px 8px 12px',
-                        borderRadius: '6px'
-                    }}>
-                        <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                            Đã gửi lời mời kết bạn
-                        </Typography>
-                    </ButtonBase>
-                );
-                break;
-            case FRIEND_STATUS.ACCEPTED:
-                result = (
-                    <ButtonBase onClick={handleClick} sx={{
-                        gap: '5px',
-                        backgroundColor: '#1B74E4',
-                        color: 'white',
-                        padding: '8px 12px 8px 12px',
-                        borderRadius: '6px'
-                    }}>
-                        <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                            Bạn bè
-                        </Typography>
-                    </ButtonBase>
-                )
-                break;
-            default:
-                result = (
-                    <ButtonBase sx={{
-                        gap: '5px',
-                        backgroundColor: '#1B74E4',
-                        color: 'white',
-                        padding: '8px 12px 8px 12px',
-                        borderRadius: '6px'
-                    }}
-                                onClick={handleAddFriend}
-                    >
-                        <PersonAddIcon sx={{fontSize: '20px'}}/>
-                        <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                            Thêm bạn bè
-                        </Typography>
-                    </ButtonBase>
-                )
-                break;
-        }
-        return result;
-    }, [friendStatus, handleAcceptFriend, handleAddFriend]);
-
     return (
         <Box>
             <Box className={styles.headerProfile}>
@@ -331,116 +236,133 @@ const ProfileInformation: React.FC<props> = () => {
                         <Grid container>
                             <Grid item xs={10}>
                                 <img className={styles.cover}
-                                     src={coverPreview ? coverPreview : (userCurrent.userInfo.coverImage || PROFILE_IMAGE.COVER)}
+                                     src={coverPreview  ? coverPreview : (userCurrent.userInfo.coverImage || PROFILE_IMAGE.COVER)}
                                      alt=""/>
                                 {self ? <ButtonBase
-                                    onClick={handleOpenModalCovered}
+                                    id="basic-button"
+                                    aria-controls={open ? 'basic-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick}
                                     sx={{backgroundColor: 'white', color: 'black'}} className={styles.buttonEditCover}
                                 >
                                     <CameraAltIcon sx={{fontSize: '16px'}}/> <Typography
                                     sx={{fontSize: '.875rem', fontWeight: '600'}}>Chỉnh sửa ảnh bìa</Typography>
                                 </ButtonBase> : null}
-                                <Modal
-                                    open={openModalCovered}
-                                    onClose={handleCloseModalCovered}
-                                    aria-labelledby="modal-modal-title"
-                                    aria-describedby="modal-modal-description"
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
                                 >
-                                    <Box className={styles.modalCover}>
-                                        <Box className={styles.headerModalCover}>
-                                            <Typography id="modal-modal-title" variant="h6"
-                                                        className={styles.modalTitle}>
-                                                Cập nhật ảnh bìa
-                                            </Typography>
-                                            <IconButton onClick={handleCloseModalCovered}
-                                                        className={styles.closeButton}
-                                                        aria-label="delete">
-                                                <CloseIcon/>
-                                            </IconButton>
-                                        </Box>
-                                        <hr/>
-                                        <Box className={styles.coverPreview}>
-                                            <Box className={styles.wrapperImagePreviewCover}>
-                                                <Cropper
-                                                    image={coverPreview}
-                                                    crop={crop}
-                                                    classes={{
-                                                        containerClassName: 'crop-container',
-                                                        mediaClassName: 'crop-media',
-                                                        cropAreaClassName: 'crop-area'
-                                                    }}
-                                                    zoom={zoom}
-                                                    cropSize={{width: 920, height: 412}}
-                                                    rotation={rotation}
-                                                    aspect={16 / 9}
-                                                    onCropChange={setCrop}
-                                                    onCropComplete={onCropComplete}
-                                                    onZoomChange={setZoom}
-                                                    showGrid={false}
-                                                    objectFit="contain"
-                                                />
+                                    <MenuItem><ButtonBase sx={{gap: '10px'}} onClick={handleOpenModalCovered}>
+                                        <FileUploadOutlinedIcon/> <Typography>
+                                        Tải lên
+                                    </Typography>
+                                    </ButtonBase>
+                                    </MenuItem>
+                                    <Modal
+                                        open={openModalCovered}
+                                        onClose={handleCloseModalCovered}
+                                        aria-labelledby="modal-modal-title"
+                                        aria-describedby="modal-modal-description"
+                                    >
+                                        <Box className={styles.modalCover}>
+                                            <Box className={styles.headerModalCover}>
+                                                <Typography id="modal-modal-title" variant="h6"
+                                                            className={styles.modalTitle}>
+                                                    Cập nhật ảnh bìa
+                                                </Typography>
+                                                <IconButton onClick={handleCloseModalCovered}
+                                                            className={styles.closeButton}
+                                                            aria-label="delete">
+                                                    <CloseIcon/>
+                                                </IconButton>
                                             </Box>
-                                            <Box className={styles.footerCover}>
-                                                <Box className={styles.zoomImageCover}>
-                                                    <IconButton onClick={() => changeSlider('decrement')}>
-                                                        <RemoveIcon/>
-                                                    </IconButton>
-                                                    <Slider
-                                                        value={typeof sliderValue === 'number' ? sliderValue : 0}
-                                                        onChange={handleSliderChange}
+                                            <hr/>
+                                            <Box className={styles.coverPreview}>
+                                                <Box className={styles.wrapperImagePreviewCover}>
+                                                    <Cropper
+                                                        image={coverPreview}
+                                                        crop={crop}
+                                                        classes={{
+                                                            containerClassName: 'crop-container',
+                                                            mediaClassName: 'crop-media',
+                                                            cropAreaClassName: 'crop-area'
+                                                        }}
+                                                        zoom={zoom}
+                                                        cropSize={{width: 920, height: 412}}
+                                                        rotation={rotation}
+                                                        aspect={16 / 9}
+                                                        onCropChange={setCrop}
+                                                        onCropComplete={onCropComplete}
+                                                        onZoomChange={setZoom}
+                                                        showGrid={false}
+                                                        objectFit="contain"
                                                     />
-                                                    <IconButton onClick={() => changeSlider('increment')}>
-                                                        <AddIcon/>
-                                                    </IconButton>
                                                 </Box>
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    gap: '20px',
-                                                    marginTop: '20px'
-                                                }}>
-                                                    <ButtonBase className={styles.buttonUploadCover}
-                                                    >
-                                                        <label htmlFor='cover_file' className="wrapper-ab"></label>
-                                                        <input type="file" onChange={chooseImageCover} ref={coverRef}
-                                                               hidden id="cover_file"/>
-                                                        <UploadIcon fontSize={`small`}/>
-                                                        <Typography fontWeight={`bold`}
-                                                                    fontSize={`small`}>Tải ảnh khác</Typography>
-                                                    </ButtonBase>
-                                                    <ButtonBase className={styles.buttonRotateCover}
-                                                                onClick={changeRotation}>
-                                                        <CropRotateIcon fontSize={`small`}/>
-                                                        <Typography fontWeight={`bold`}
-                                                                    fontSize={`small`}>Xoay</Typography>
-                                                    </ButtonBase>
-                                                    <ButtonBase className={styles.buttonSaveCover}
-                                                                onClick={updateCover}>
-                                                        <Typography fontWeight={`bold`}
-                                                                    fontSize={`small`}>Lưu</Typography>
-                                                    </ButtonBase>
+                                                <Box className={styles.footerCover}>
+                                                    <Box className={styles.zoomImageCover}>
+                                                        <IconButton onClick={() => changeSlider('decrement')}>
+                                                            <RemoveIcon/>
+                                                        </IconButton>
+                                                        <Slider
+                                                            value={typeof sliderValue === 'number' ? sliderValue : 0}
+                                                            onChange={handleSliderChange}
+                                                        />
+                                                        <IconButton onClick={() => changeSlider('increment')}>
+                                                            <AddIcon/>
+                                                        </IconButton>
+                                                    </Box>
+                                                    <Box sx={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        gap: '20px',
+                                                        marginTop: '20px'
+                                                    }}>
+                                                        <ButtonBase className={styles.buttonUploadCover}
+                                                        >
+                                                            <label htmlFor='cover_file' className="wrapper-ab"></label>
+                                                            <input type="file" onChange={chooseImageCover} ref={coverRef}
+                                                                   hidden id="cover_file"/>
+                                                            <UploadIcon fontSize={`small`}/>
+                                                            <Typography fontWeight={`bold`}
+                                                                        fontSize={`small`}>Tải ảnh khác</Typography>
+                                                        </ButtonBase>
+                                                        <ButtonBase className={styles.buttonRotateCover}
+                                                                    onClick={changeRotation}>
+                                                            <CropRotateIcon fontSize={`small`}/>
+                                                            <Typography fontWeight={`bold`}
+                                                                        fontSize={`small`}>Xoay</Typography>
+                                                        </ButtonBase>
+                                                        <ButtonBase className={styles.buttonSaveCover} onClick={updateCover}>
+                                                            <Typography fontWeight={`bold`}
+                                                                        fontSize={`small`}>Lưu</Typography>
+                                                        </ButtonBase>
+                                                    </Box>
                                                 </Box>
                                             </Box>
                                         </Box>
-                                    </Box>
-                                </Modal>
+                                    </Modal>
+                                    <hr/>
+                                    <MenuItem onClick={handleClose}
+                                              sx={{gap: '10px'}}><DeleteOutlineOutlinedIcon/> Gỡ</MenuItem>
+                                </Menu>
                                 <Box className={styles.avatar}>
                                     <Avatar
                                         alt="Remy Sharp"
                                         src={avatarPreview ? avatarPreview : (userCurrent.userInfo.avatar || PROFILE_IMAGE.AVATAR)}
                                         sx={{width: 165, height: 165, border: '5px solid white'}}
                                     />
-                                    {self && (
-                                        <IconButton onClick={handleOpenModal} sx={{
-                                            position: 'absolute',
-                                            bottom: '5%',
-                                            right: '12%',
-                                            backgroundColor: '#E4E6EB',
-                                            '&:hover': {backgroundColor: '#D8DADF'}
-                                        }}>
-                                            <CameraAltIcon sx={{fontSize: '22px'}}/>
-                                        </IconButton>
-                                    )}
+                                    <IconButton onClick={handleOpenModal} sx={{
+                                        position: 'absolute', bottom: '5%', right: '12%', backgroundColor: '#E4E6EB',
+                                        '&:hover': {backgroundColor: '#D8DADF'}
+                                    }}>
+                                        <CameraAltIcon sx={{fontSize: '22px'}}/>
+                                    </IconButton>
                                     <Modal
                                         open={openModal}
                                         onClose={handleCloseModal}
@@ -549,52 +471,52 @@ const ProfileInformation: React.FC<props> = () => {
                                 </AvatarGroup>
                             </Grid>
                             <Grid item xs={6} className={styles.buttonFunction}>
-                                {self ? (
-                                    <>
-                                        <ButtonBase sx={{
-                                            gap: '5px',
-                                            backgroundColor: '#1B74E4',
-                                            color: 'white',
-                                            padding: '8px 12px 8px 12px',
-                                            borderRadius: '6px'
-                                        }}>
-                                            <AddCircleIcon sx={{fontSize: '20px'}}/>
-                                            <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                                                Thêm vào tin
-                                            </Typography>
-                                        </ButtonBase>
-                                        <ButtonBase sx={{
-                                            gap: '5px',
-                                            backgroundColor: '#E4E6EB',
-                                            color: 'black',
-                                            padding: '8px 12px 8px 12px',
-                                            borderRadius: '6px'
-                                        }}>
-                                            <EditIcon sx={{fontSize: '20px'}}/>
-                                            <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                                                Chỉnh sửa trang cá nhân
-                                            </Typography>
-                                        </ButtonBase>
-                                    </>
-                                ) : (
-                                    <>
-                                        {renderButton}
-                                        <ButtonBase sx={{
-                                            gap: '5px',
-                                            backgroundColor: '#E4E6EB',
-                                            color: 'black',
-                                            padding: '8px 12px 8px 12px',
-                                            borderRadius: '6px'
-                                        }}>
-                                            <ChatBubbleOutlineIcon sx={{fontSize: '20px'}}/>
-                                            <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
-                                                Nhắn tin
-                                            </Typography>
-                                        </ButtonBase>
-                                    </>
-                                )}
-
-
+                                {self ? <ButtonBase sx={{
+                                    gap: '5px',
+                                    backgroundColor: '#1B74E4',
+                                    color: 'white',
+                                    padding: '8px 12px 8px 12px',
+                                    borderRadius: '6px'
+                                }}>
+                                    <AddCircleIcon sx={{fontSize: '20px'}}/>
+                                    <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
+                                        Thêm vào tin
+                                    </Typography>
+                                </ButtonBase> : <ButtonBase sx={{
+                                    gap: '5px',
+                                    backgroundColor: '#1B74E4',
+                                    color: 'white',
+                                    padding: '8px 12px 8px 12px',
+                                    borderRadius: '6px'
+                                }}>
+                                    <PersonAddIcon sx={{fontSize: '20px'}}/>
+                                    <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
+                                        Thêm bạn bè
+                                    </Typography>
+                                </ButtonBase>}
+                                {self ? <ButtonBase sx={{
+                                    gap: '5px',
+                                    backgroundColor: '#E4E6EB',
+                                    color: 'black',
+                                    padding: '8px 12px 8px 12px',
+                                    borderRadius: '6px'
+                                }}>
+                                    <EditIcon sx={{fontSize: '20px'}}/>
+                                    <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
+                                        Chỉnh sửa trang cá nhân
+                                    </Typography>
+                                </ButtonBase> : <ButtonBase sx={{
+                                    gap: '5px',
+                                    backgroundColor: '#E4E6EB',
+                                    color: 'black',
+                                    padding: '8px 12px 8px 12px',
+                                    borderRadius: '6px'
+                                }}>
+                                    <ChatBubbleOutlineIcon sx={{fontSize: '20px'}}/>
+                                    <Typography sx={{fontSize: '.875rem', fontWeight: '600'}}>
+                                        Nhắn tin
+                                    </Typography>
+                                </ButtonBase>}
                             </Grid>
                         </Grid>
                         <Grid container>
@@ -615,19 +537,6 @@ const ProfileInformation: React.FC<props> = () => {
                     </Container>
                 </Box>
             </Box>
-            <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-            >
-                <MenuItem>
-                    Huỷ kết bạn
-                </MenuItem>
-                <hr/>
-                <MenuItem onClick={handleClose}>
-                    Chặn
-                </MenuItem>
-            </Menu>
         </Box>
     )
 }

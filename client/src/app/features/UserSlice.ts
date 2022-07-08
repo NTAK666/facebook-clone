@@ -18,9 +18,9 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addMatcher(
             userService.endpoints.getUserById.matchFulfilled,
-            (state, {payload}: PayloadAction<Response<IUserFull>>) => {
-                if (payload.data) {
-                    state.userCurrent = payload.data;
+            (state, action: PayloadAction<Response<IUserFull>>) => {
+                if (action.payload.data) {
+                    state.userCurrent = action.payload.data;
                 }
             }
         );

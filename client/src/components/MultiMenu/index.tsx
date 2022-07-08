@@ -11,6 +11,8 @@ import MultiMenuItem from "./MultiMenuItem";
 import {onLogout} from "../../app/features/AuthSlice";
 import NProgress from "nprogress";
 
+const PROFILE_LINK = `/profile`
+
 interface IProps {
     anchorEl: null | HTMLElement;
     handleClose: () => void;
@@ -93,7 +95,7 @@ const MultiMenu: React.FC<IProps> = (props) => {
                             fontWeight={'bold'}>{`${user.userInfo.firstName} ${user.userInfo.lastName}`}</Typography>
                     </Box>
                     <Divider sx={{width: '90%', backgroundColor: "#e4e6eb", margin: '0 auto'}}/>
-                    <Link to={`/profile/${user.userInfo.slug}-${user.id}`} className={'text-decoration-none'}>
+                    <Link to={PROFILE_LINK} className={'text-decoration-none'}>
                         <Typography fontWeight={'bold'} className={'text-color-link'}>Xem tất cả trang cá
                             nhân</Typography>
                     </Link>

@@ -1,20 +1,19 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Box} from "@mui/material";
 import styles from "../ProfileIntroduce/profile-introduce.module.scss";
 import CreatePost from "../../CreatePost";
 import ListPost from "../../Post/ListPost";
+import {useGetPostsByMeQuery} from "../../../app/services/PostService";
 import PostNormal from "../../Post/PostNormal";
 import PostSkeleton from "../../Skeleton/PostSkeleton";
 import {useAppSelector} from "../../../app/hook";
 
-interface IProps {
-    isLoading: boolean;
-}
 
-const ProfilePost: React.FC<IProps> = ({isLoading}) => {
-    const {postsMe} = useAppSelector(state => state.postSlice);
+const ProfilePost = () => {
+    const {isLoading} = useGetPostsByMeQuery();
+    const {posts} = useAppSelector(state => state.postSlice);
 
-    const renderPosts = useMemo(() => {
+    const renderPosts = () => {
         if (isLoading) {
             return (
                 <>
@@ -24,8 +23,9 @@ const ProfilePost: React.FC<IProps> = ({isLoading}) => {
             )
         }
 
-        if (postsMe.length > 0) {
-            return postsMe.map((post, index) => {
+        if (posts.length > 0) {
+
+            return posts.slice(0).reverse().map((post, index) => {
                 return (
                     <PostNormal
                         key={index}
@@ -34,13 +34,12 @@ const ProfilePost: React.FC<IProps> = ({isLoading}) => {
                 )
             })
         }
-    }, [postsMe, isLoading]);
-
+    }
     return (
         <Box className={styles.post}>
             <CreatePost />
             <ListPost>
-                {renderPosts}
+                {renderPosts()}
             </ListPost>
         </Box>
     )

@@ -13,6 +13,7 @@ const ProfilePhoto = () => {
         }
     }, [data]);
 
+
     return (
         <Box className={styles.profilePhoto}>
             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
@@ -34,7 +35,6 @@ const ProfilePhoto = () => {
                             <img
                                 src={`${item}`}
                                 style={{width: '148px', height: '148px'}}
-                                alt={""}
                             />
                     </Box>
                 ))}
