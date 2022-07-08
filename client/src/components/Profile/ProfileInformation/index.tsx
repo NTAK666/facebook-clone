@@ -74,7 +74,7 @@ const ProfileInformation: React.FC<props> = () => {
                 setFriendStatus(FRIEND_STATUS.REQUESTS);
             }
         }
-        
+
     }, [friends, userCurrent, friendRequest, requestHasSend]);
 
     const [userUpdateApi] = useUpdateUserMutation();
